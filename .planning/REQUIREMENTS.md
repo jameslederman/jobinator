@@ -89,40 +89,40 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DISC-01 | — | Pending |
-| DISC-02 | — | Pending |
-| DISC-03 | — | Pending |
-| DISC-04 | — | Pending |
-| DISC-05 | — | Pending |
-| DISC-06 | — | Pending |
-| SCOR-01 | — | Pending |
-| SCOR-02 | — | Pending |
-| SCOR-03 | — | Pending |
-| SCOR-04 | — | Pending |
-| SCOR-05 | — | Pending |
-| MATL-01 | — | Pending |
-| MATL-02 | — | Pending |
-| MATL-03 | — | Pending |
-| MATL-04 | — | Pending |
-| MATL-05 | — | Pending |
-| MATL-06 | — | Pending |
-| APPL-01 | — | Pending |
-| APPL-02 | — | Pending |
-| APPL-03 | — | Pending |
-| APPL-04 | — | Pending |
-| APPL-05 | — | Pending |
-| INFR-01 | — | Pending |
-| INFR-02 | — | Pending |
-| INFR-03 | — | Pending |
-| INFR-04 | — | Pending |
-| INFR-05 | — | Pending |
-| INFR-06 | — | Pending |
+| DISC-01 | Phase 2 | Pending |
+| DISC-02 | Phase 2 | Pending |
+| DISC-03 | Phase 2 | Pending |
+| DISC-04 | Phase 1 | Pending |
+| DISC-05 | Phase 1 | Pending |
+| DISC-06 | Phase 1 | Pending |
+| SCOR-01 | Phase 1 | Pending |
+| SCOR-02 | Phase 3 | Pending |
+| SCOR-03 | Phase 3 | Pending |
+| SCOR-04 | Phase 3 | Pending |
+| SCOR-05 | Phase 3 | Pending |
+| MATL-01 | Phase 4 | Pending |
+| MATL-02 | Phase 4 | Pending |
+| MATL-03 | Phase 4 | Pending |
+| MATL-04 | Phase 4 | Pending |
+| MATL-05 | Phase 4 | Pending |
+| MATL-06 | Phase 4 | Pending |
+| APPL-01 | Phase 5 | Pending |
+| APPL-02 | Phase 5 | Pending |
+| APPL-03 | Phase 5 | Pending |
+| APPL-04 | Phase 5 | Pending |
+| APPL-05 | Phase 5 | Pending |
+| INFR-01 | Phase 3 | Pending |
+| INFR-02 | Phase 3 | Pending |
+| INFR-03 | Phase 3 | Pending |
+| INFR-04 | Phase 1 | Pending |
+| INFR-05 | Phase 5 | Pending |
+| INFR-06 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 28 total
-- Mapped to phases: 0
-- Unmapped: 28
+- Mapped to phases: 28
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-04*
-*Last updated: 2026-04-04 after initial definition*
+*Last updated: 2026-04-04 after roadmap creation — all 28 requirements mapped*
