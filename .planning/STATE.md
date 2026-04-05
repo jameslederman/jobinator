@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 02-data-ingestion 02-02-PLAN.md
-last_updated: "2026-04-05T13:24:00.436Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 02-data-ingestion 02-03-PLAN.md
+last_updated: "2026-04-05T13:37:05.983Z"
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -51,6 +51,7 @@ Plan: 3 of 3
 | Phase 01-foundation P02 | 4 | 2 tasks | 8 files |
 | Phase 02-data-ingestion P01 | 8 | 2 tasks | 14 files |
 | Phase 02-data-ingestion P02 | 4 | 2 tasks | 6 files |
+| Phase 02-data-ingestion P03 | 9 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,10 @@ Recent decisions affecting current work:
 - [Phase 02-data-ingestion]: HNHiringAdapter fragile=False — Algolia API is officially provided by HN and long-stable
 - [Phase 02-data-ingestion]: WellfoundAdapter fragile=True — __NEXT_DATA__ extraction will break on Next.js structure changes
 - [Phase 02-data-ingestion]: Wellfound pagination: stop when page returns < 10 nodes (no explicit total count in Apollo state)
+- [Phase 02-data-ingestion]: get_existing_job_keys() called once per persist_jobs() batch to avoid N+1 DB queries
+- [Phase 02-data-ingestion]: In-memory extension of existing_keys list within persist_jobs() deduplicates same-batch duplicates without extra DB round-trips
+- [Phase 02-data-ingestion]: Consecutive-zero health counter only incremented on successful 0-result runs, not on adapter errors
+- [Phase 02-data-ingestion]: ruff pre-commit hook updated from v0.5.0 to v0.15.9 to match local ruff and resolve import ordering conflicts
 
 ### Pending Todos
 
@@ -88,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-05T13:24:00.434Z
-Stopped at: Completed 02-data-ingestion 02-02-PLAN.md
+Last session: 2026-04-05T13:37:05.981Z
+Stopped at: Completed 02-data-ingestion 02-03-PLAN.md
 Resume file: None

@@ -51,7 +51,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Dependencies, schema migration, DiscoveryConfig, adapter Protocol, Greenhouse + Lever adapters
 - [x] 02-02-PLAN.md — HN Who's Hiring adapter, Wellfound adapter
-- [ ] 02-03-PLAN.md — Discovery orchestrator, stale marking, health tracking, CLI discover command
+- [x] 02-03-PLAN.md — Discovery orchestrator, stale marking, health tracking, CLI discover command
 
 ### Phase 3: LLM Scoring
 **Goal**: Discovered jobs are scored for fit using cheap LLM models with full structured reasoning, and every call is gated and logged against configurable budget limits
