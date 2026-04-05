@@ -38,21 +38,21 @@ created: 2026-04-04
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 01-01-01 | 01 | 1 | INFR-04 | unit | `uv run pytest tests/test_db.py -x` | ❌ W0 | ⬜ pending |
-| 01-02-01 | 02 | 1 | DISC-04 | unit | `uv run pytest tests/test_normalize.py -x` | ❌ W0 | ⬜ pending |
-| 01-02-02 | 02 | 1 | DISC-05 | unit | `uv run pytest tests/test_dedup.py -x` | ❌ W0 | ⬜ pending |
-| 01-03-01 | 03 | 1 | DISC-06, SCOR-01 | unit | `uv run pytest tests/test_filter.py -x` | ❌ W0 | ⬜ pending |
-| 01-04-01 | 04 | 2 | INFR-06 | unit | `uv run pytest tests/test_budget.py -x` | ❌ W0 | ⬜ pending |
-| 01-05-01 | 05 | 2 | INFR-04 | unit | `uv run pytest tests/test_output.py -x` | ❌ W0 | ⬜ pending |
+| 01-01-02 | 01 | 1 | INFR-04 | unit | `uv run pytest tests/test_models.py -x` | W0 | pending |
+| 01-02-01 | 02 | 2 | DISC-04 | unit | `uv run pytest tests/test_normalize.py -x` | W0 | pending |
+| 01-02-02 | 02 | 2 | DISC-05 | unit | `uv run pytest tests/test_dedup.py -x` | W0 | pending |
+| 01-02-03 | 02 | 2 | DISC-06, SCOR-01 | unit | `uv run pytest tests/test_filter.py -x` | W0 | pending |
+| 01-03-01 | 03 | 2 | INFR-06 | unit | `uv run pytest tests/test_budget.py -x` | W0 | pending |
+| 01-03-02 | 03 | 2 | INFR-04 | unit | `uv run pytest tests/test_output.py -x` | W0 | pending |
 
-*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
+*Status: pending / green / red / flaky*
 
 ---
 
 ## Wave 0 Requirements
 
 - [ ] `tests/conftest.py` — shared fixtures (temp SQLite DB, sample job dicts)
-- [ ] `tests/test_db.py` — stubs for database init and migration tests
+- [ ] `tests/test_models.py` — stubs for model and database tests
 - [ ] `tests/test_normalize.py` — stubs for normalization pipeline tests
 - [ ] `tests/test_dedup.py` — stubs for deduplication tests
 - [ ] `tests/test_filter.py` — stubs for heuristic filter tests
