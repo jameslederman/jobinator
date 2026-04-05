@@ -30,12 +30,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A job failing hard filter criteria (salary floor, location type, title keywords) is rejected by the heuristic filter with a logged reason — no LLM called
   4. The output directory is created at the configured path and a placeholder materials folder is written with correct company/role/timestamp structure
   5. Attempting an LLM call against a mock budget at its daily limit raises a hard stop before any external call is made
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 01-01-PLAN.md — Project scaffold, SQLModel tables, DB engine, Alembic, settings
 - [ ] 01-02-PLAN.md — Normalization pipeline, deduplication, heuristic filter
-- [ ] 01-03-PLAN.md — Budget tracker infrastructure, output directory manager
+- [x] 01-03-PLAN.md — Budget tracker infrastructure, output directory manager
 
 ### Phase 2: Data Ingestion
 **Goal**: The discover command pulls real jobs from all three sources, deduplicates them cross-source, and persists normalized records to SQLite
@@ -91,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Planning complete | - |
+| 1. Foundation | 2/3 | In Progress|  |
 | 2. Data Ingestion | 0/TBD | Not started | - |
 | 3. LLM Scoring | 0/TBD | Not started | - |
 | 4. Materials Generation | 0/TBD | Not started | - |

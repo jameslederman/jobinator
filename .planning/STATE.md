@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 01-foundation/01-01-PLAN.md
-last_updated: "2026-04-05T01:45:30.124Z"
+stopped_at: Completed 01-foundation/01-03-PLAN.md
+last_updated: "2026-04-05T01:50:44.858Z"
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-04-04)
 ## Current Position
 
 Phase: 01 (foundation) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -47,6 +47,7 @@ Plan: 2 of 3
 
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 7 | 2 tasks | 19 files |
+| Phase 01-foundation P03 | 3 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -61,6 +62,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: uv_build replaced by hatchling as build backend for better ecosystem compatibility
 - [Phase 01-foundation]: pydantic-settings TOML loading requires settings_customise_sources() with TomlConfigSettingsSource — toml_file shorthand silently ignored
 - [Phase 01-foundation]: Alembic autogenerate migration files need import sqlmodel added (uses sqlmodel.sql.sqltypes.AutoString) — baked into script.py.mako template
+- [Phase 01-foundation]: Use datetime.utcnow() boundaries in daily_spend() to match naive utcnow() stored in SpendRecord.recorded_at, avoiding timezone mismatch on machines where local time differs from UTC
+- [Phase 01-foundation]: BudgetConfig as standalone Pydantic BaseModel (not Settings subclass) for test-overridable config without requiring config files
 
 ### Pending Todos
 
@@ -74,6 +77,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-05T01:45:30.122Z
-Stopped at: Completed 01-foundation/01-01-PLAN.md
+Last session: 2026-04-05T01:50:44.856Z
+Stopped at: Completed 01-foundation/01-03-PLAN.md
 Resume file: None

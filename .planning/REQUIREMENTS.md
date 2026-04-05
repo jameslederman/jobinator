@@ -48,7 +48,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **INFR-03**: Budget enforcement gates LLM calls — hard stop when limit is reached
 - [x] **INFR-04**: All job and application state persists in SQLite via SQLModel with schema migrations
 - [ ] **INFR-05**: CLI interface provides commands: discover, score, apply, run --auto, review, status
-- [ ] **INFR-06**: Agent loop is interruptible and logs all decisions
+- [x] **INFR-06**: Agent loop is interruptible and logs all decisions
 
 ## v2 Requirements
 
@@ -116,7 +116,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-03 | Phase 3 | Pending |
 | INFR-04 | Phase 1 | Complete |
 | INFR-05 | Phase 5 | Pending |
-| INFR-06 | Phase 1 | Pending |
+| INFR-06 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 28 total
