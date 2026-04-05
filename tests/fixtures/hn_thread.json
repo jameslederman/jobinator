@@ -1,0 +1,30 @@
+{
+  "id": 99999999,
+  "title": "Ask HN: Who is Hiring? (April 2026)",
+  "author": "whoishiring",
+  "children": [
+    {
+      "id": 100000001,
+      "text": "Anthropic | Senior ML Engineer | San Francisco, CA | $200k-$300k | Full-time | https://anthropic.com/careers",
+      "author": "anthropic_hr",
+      "created_at": "2026-04-01T12:00:00Z",
+      "children": [
+        {"id": 100000099, "text": "Great company!", "author": "fan", "created_at": "2026-04-01T13:00:00Z", "children": []}
+      ]
+    },
+    {
+      "id": 100000002,
+      "text": "Stripe | Data Scientist, ML | Remote (US) | https://stripe.com/jobs",
+      "author": "stripe_eng",
+      "created_at": "2026-04-01T12:30:00Z",
+      "children": []
+    },
+    {
+      "id": 100000003,
+      "text": "Is anyone else finding the market tough this month?",
+      "author": "jobseeker",
+      "created_at": "2026-04-01T13:00:00Z",
+      "children": []
+    }
+  ]
+}

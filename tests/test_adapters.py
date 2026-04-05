@@ -402,3 +402,157 @@ class TestLeverAdapter:
         adapter = LeverAdapter(companies=[])
         assert adapter.source_id == "lever"
         assert adapter.fragile is False
+
+
+# ---------------------------------------------------------------------------
+# HN Who's Hiring Adapter tests
+# ---------------------------------------------------------------------------
+
+ALGOLIA_SEARCH_URL = "https://hn.algolia.com/api/v1/search_by_date"
+ALGOLIA_ITEM_URL = "https://hn.algolia.com/api/v1/items/99999999"
+
+
+class TestHNHiringAdapter:
+    """Tests for HNHiringAdapter using respx mocks."""
+
+    def test_find_latest_thread_returns_story_id(self, respx_mock):
+        """find_latest_hn_hiring_threads() returns story IDs from Algolia search response."""
+        from jobinator.adapters.hn_hiring import find_latest_hn_hiring_threads
+
+        algolia_response = {
+            "hits": [{"objectID": "99999999", "title": "Ask HN: Who is Hiring? (April 2026)"}]
+        }
+        respx_mock.get(ALGOLIA_SEARCH_URL).mock(
+            return_value=__import__("httpx").Response(200, json=algolia_response)
+        )
+
+        result = find_latest_hn_hiring_threads(months_back=1)
+        assert result == [99999999]
+
+    def test_find_latest_thread_raises_on_empty_hits(self, respx_mock):
+        """find_latest_hn_hiring_threads() raises RuntimeError when no hits returned."""
+        from jobinator.adapters.hn_hiring import find_latest_hn_hiring_threads
+
+        algolia_response = {"hits": []}
+        respx_mock.get(ALGOLIA_SEARCH_URL).mock(
+            return_value=__import__("httpx").Response(200, json=algolia_response)
+        )
+
+        with pytest.raises(RuntimeError, match="No Who is Hiring thread found"):
+            find_latest_hn_hiring_threads(months_back=1)
+
+    def test_parse_hn_comment_pipe_delimited(self):
+        """parse_hn_comment extracts company, title, location from pipe-delimited format."""
+        from jobinator.adapters.hn_hiring import parse_hn_comment
+
+        comment = {
+            "id": 100000001,
+            "text": "Anthropic | Senior ML Engineer | San Francisco, CA | $200k-$300k | Full-time | https://anthropic.com/careers",
+            "author": "anthropic_hr",
+            "created_at": "2026-04-01T12:00:00Z",
+        }
+        result = parse_hn_comment(comment)
+        assert result is not None
+        assert result["company"] == "Anthropic"
+        assert result["title"] == "Senior ML Engineer"
+        assert result["location_raw"] == "San Francisco, CA"
+
+    def test_parse_hn_comment_non_pipe_delimited(self):
+        """parse_hn_comment handles non-pipe-delimited comments."""
+        from jobinator.adapters.hn_hiring import parse_hn_comment
+
+        comment = {
+            "id": 100000003,
+            "text": (
+                "Is anyone else finding the market tough this month?"
+                " We are seeing a lot of activity in ML."
+            ),
+            "author": "jobseeker",
+            "created_at": "2026-04-01T13:00:00Z",
+        }
+        result = parse_hn_comment(comment)
+        # Short non-job meta comment should return a result but company/title from first line
+        if result is not None:
+            assert "company" in result
+            assert "title" in result
+
+    def test_fetch_returns_raw_job_dicts(self, respx_mock):
+        """HNHiringAdapter.fetch() returns RawJobDicts from mocked thread."""
+        from jobinator.adapters.hn_hiring import HNHiringAdapter
+
+        fixture_path = FIXTURES_DIR / "hn_thread.json"
+        fixture_data = json.loads(fixture_path.read_text())
+
+        algolia_response = {
+            "hits": [{"objectID": "99999999", "title": "Ask HN: Who is Hiring? (April 2026)"}]
+        }
+        respx_mock.get(ALGOLIA_SEARCH_URL).mock(
+            return_value=__import__("httpx").Response(200, json=algolia_response)
+        )
+        respx_mock.get(ALGOLIA_ITEM_URL).mock(
+            return_value=__import__("httpx").Response(200, json=fixture_data)
+        )
+
+        adapter = HNHiringAdapter(months_back=1)
+        results = adapter.fetch()
+
+        # Should have 2 job posts (Anthropic + Stripe), meta comment excluded/parsed
+        assert len(results) >= 2
+        urls = [r["source_url"] for r in results]
+        assert any("news.ycombinator.com/item?id=100000001" in u for u in urls)
+        assert any("news.ycombinator.com/item?id=100000002" in u for u in urls)
+
+    def test_fetch_skips_nested_replies(self, respx_mock):
+        """HNHiringAdapter.fetch() skips nested replies (only processes top-level children)."""
+        from jobinator.adapters.hn_hiring import HNHiringAdapter
+
+        fixture_path = FIXTURES_DIR / "hn_thread.json"
+        fixture_data = json.loads(fixture_path.read_text())
+
+        algolia_response = {
+            "hits": [{"objectID": "99999999", "title": "Ask HN: Who is Hiring? (April 2026)"}]
+        }
+        respx_mock.get(ALGOLIA_SEARCH_URL).mock(
+            return_value=__import__("httpx").Response(200, json=algolia_response)
+        )
+        respx_mock.get(ALGOLIA_ITEM_URL).mock(
+            return_value=__import__("httpx").Response(200, json=fixture_data)
+        )
+
+        adapter = HNHiringAdapter(months_back=1)
+        results = adapter.fetch()
+
+        # Comment 100000099 is a nested reply — it must not appear in results
+        urls = [r["source_url"] for r in results]
+        assert not any("news.ycombinator.com/item?id=100000099" in u for u in urls)
+
+    def test_fetch_source_url_points_to_hn_comment(self, respx_mock):
+        """HNHiringAdapter.fetch() sets source_url to HN comment URL."""
+        from jobinator.adapters.hn_hiring import HNHiringAdapter
+
+        fixture_path = FIXTURES_DIR / "hn_thread.json"
+        fixture_data = json.loads(fixture_path.read_text())
+
+        algolia_response = {
+            "hits": [{"objectID": "99999999", "title": "Ask HN: Who is Hiring? (April 2026)"}]
+        }
+        respx_mock.get(ALGOLIA_SEARCH_URL).mock(
+            return_value=__import__("httpx").Response(200, json=algolia_response)
+        )
+        respx_mock.get(ALGOLIA_ITEM_URL).mock(
+            return_value=__import__("httpx").Response(200, json=fixture_data)
+        )
+
+        adapter = HNHiringAdapter(months_back=1)
+        results = adapter.fetch()
+
+        for r in results:
+            assert r["source_url"].startswith("https://news.ycombinator.com/item?id=")
+
+    def test_source_id_and_fragile(self):
+        """HNHiringAdapter sets source_id='hn_hiring' and fragile=False."""
+        from jobinator.adapters.hn_hiring import HNHiringAdapter
+
+        adapter = HNHiringAdapter()
+        assert adapter.source_id == "hn_hiring"
+        assert adapter.fragile is False
