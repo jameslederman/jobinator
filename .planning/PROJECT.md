@@ -12,12 +12,13 @@ Surface high-fit opportunities I'd miss manually and generate application materi
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Multi-source job discovery (Wellfound, Greenhouse/Lever ATS, HN Who's Hiring) — Validated in Phase 2: Data Ingestion
+- [x] Structured job data normalization (title, company, location, description, requirements, salary, URL, source) — Validated in Phase 1: Foundation + Phase 2: Data Ingestion
+- [x] Deduplication — no re-processing or duplicate applications — Validated in Phase 1: Foundation + Phase 2: Data Ingestion
 
 ### Active
 
-- [ ] Multi-source job discovery (Wellfound, Greenhouse/Lever ATS, HN Who's Hiring)
-- [ ] Structured job data normalization (title, company, location, description, requirements, salary, URL, source)
+- [ ] Hybrid fit scoring: hard filters (location, salary, keywords) then LLM-based nuanced evaluation
 - [ ] Hybrid fit scoring: hard filters (location, salary, keywords) then LLM-based nuanced evaluation
 - [ ] Fit score output: score 0-1, strengths match, gaps, compensation estimate, priority score
 - [ ] JSON Resume base profile with programmatic tailoring per role
@@ -28,7 +29,6 @@ Surface high-fit opportunities I'd miss manually and generate application materi
 - [ ] Materials versioned and structured per company/role
 - [ ] Three application modes: manual assist, human-in-the-loop, form-filling assist
 - [ ] SQLite + SQLModel persistent state (jobs seen, scored, applied, materials, outcomes)
-- [ ] Deduplication — no re-processing or duplicate applications
 - [ ] Custom Python agent loop with tool dispatch (no framework dependency)
 - [ ] Multi-provider LLM: cheap models for filtering/scoring, strong models for generation
 - [ ] Token/API spend tracking with configurable daily and per-job budgets
@@ -93,4 +93,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-05 after Phase 1 (Foundation) completion — data layer, pipeline skeleton, and budget rails operational*
+*Last updated: 2026-04-05 after Phase 2 (Data Ingestion) completion — all four source adapters operational, discovery pipeline with normalize/dedup/persist/stale-marking wired to CLI*
