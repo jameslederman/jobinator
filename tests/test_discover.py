@@ -7,9 +7,12 @@ from io import StringIO
 from typing import Any
 from unittest.mock import patch
 
-from jobinator.models.job import NormalizedJob, StatusEvent
 from rich.console import Console
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session, SQLModel, create_engine, select
+
+from jobinator.configs.settings import DiscoveryConfig
+from jobinator.models.job import NormalizedJob, StatusEvent
+from jobinator.pipelines.normalize import normalize_job
 
 # ---------------------------------------------------------------------------
 # Helpers / fixtures
@@ -71,14 +74,14 @@ class TestPersistJobs:
 
         engine = make_engine()
         with Session(engine) as session:
-            raw_jobs = [_raw("Acme", "Data Scientist")]
+            raw_jobs = [_raw("Acme", "Data Scientist", "desc for acme ds")]
             new_count, dup_count = persist_jobs(session, raw_jobs, "greenhouse")
 
         assert new_count == 1
         assert dup_count == 0
 
         with Session(engine) as session:
-            jobs = session.query(NormalizedJob).all()
+            jobs = session.exec(select(NormalizedJob)).all()
             assert len(jobs) == 1
             assert jobs[0].company == "Acme"
 
@@ -88,40 +91,44 @@ class TestPersistJobs:
 
         engine = make_engine()
         with Session(engine) as session:
-            raw_jobs = [_raw("Acme", "Data Scientist")]
+            raw_jobs = [_raw("Acme", "Data Scientist", "desc for acme ds")]
             persist_jobs(session, raw_jobs, "greenhouse")
 
         with Session(engine) as session:
-            events = session.query(StatusEvent).all()
+            events = session.exec(select(StatusEvent)).all()
             assert len(events) == 1
             assert events[0].status == "discovered"
 
     def test_persist_duplicate_updates_last_seen_at(self):
         """persist_jobs() updates last_seen_at on existing duplicate instead of inserting."""
+        import time
+
         from jobinator.pipelines.discover import persist_jobs
 
         engine = make_engine()
 
         # First insert
         with Session(engine) as session:
-            persist_jobs(session, [_raw("Acme", "Data Scientist")], "greenhouse")
+            persist_jobs(
+                session, [_raw("Acme", "Data Scientist", "desc for acme ds")], "greenhouse"
+            )
 
         with Session(engine) as session:
-            job = session.query(NormalizedJob).first()
+            job = session.exec(select(NormalizedJob)).first()
+            assert job is not None
             original_last_seen = job.last_seen_at
-
-        # Second insert — same company + title = duplicate
-        import time
 
         time.sleep(0.01)  # ensure clock advances
         with Session(engine) as session:
-            new_count, dup_count = persist_jobs(session, [_raw("Acme", "Data Scientist")], "lever")
+            new_count, dup_count = persist_jobs(
+                session, [_raw("Acme", "Data Scientist", "desc for acme ds")], "lever"
+            )
 
         assert new_count == 0
         assert dup_count == 1
 
         with Session(engine) as session:
-            jobs = session.query(NormalizedJob).all()
+            jobs = session.exec(select(NormalizedJob)).all()
             assert len(jobs) == 1  # not inserted twice
             assert jobs[0].last_seen_at >= original_last_seen
 
@@ -131,8 +138,8 @@ class TestPersistJobs:
 
         engine = make_engine()
         raw_jobs = [
-            _raw("Acme", "Data Scientist"),
-            _raw("Acme", "Data Scientist"),  # duplicate within same batch
+            _raw("Acme", "Data Scientist", "same description for both"),
+            _raw("Acme", "Data Scientist", "same description for both"),  # dup within batch
         ]
         with Session(engine) as session:
             new_count, dup_count = persist_jobs(session, raw_jobs, "greenhouse")
@@ -141,7 +148,7 @@ class TestPersistJobs:
         assert dup_count == 1
 
         with Session(engine) as session:
-            jobs = session.query(NormalizedJob).all()
+            jobs = session.exec(select(NormalizedJob)).all()
             assert len(jobs) == 1
 
 
@@ -153,9 +160,7 @@ class TestPersistJobs:
 class TestMarkStaleJobs:
     def _insert_job(self, session: Session, last_seen_at: datetime) -> str:
         """Helper: insert a job with specific last_seen_at."""
-        from jobinator.pipelines.normalize import normalize_job
-
-        raw = _raw("Stale Corp", "Old Role")
+        raw = _raw("Stale Corp", "Old Role", "stale corp old role desc")
         job = normalize_job(raw, "greenhouse")
         job.last_seen_at = last_seen_at
         session.add(job)
@@ -178,7 +183,7 @@ class TestMarkStaleJobs:
         assert stale_count == 1
 
         with Session(engine) as session:
-            jobs = session.query(NormalizedJob).all()
+            jobs = session.exec(select(NormalizedJob)).all()
             assert jobs[0].is_stale is True
 
     def test_does_not_mark_recent_jobs_as_stale(self):
@@ -197,7 +202,7 @@ class TestMarkStaleJobs:
         assert stale_count == 0
 
         with Session(engine) as session:
-            jobs = session.query(NormalizedJob).all()
+            jobs = session.exec(select(NormalizedJob)).all()
             assert jobs[0].is_stale is False
 
 
@@ -209,11 +214,10 @@ class TestMarkStaleJobs:
 class TestRunDiscovery:
     def test_run_discovery_calls_all_adapters(self, tmp_path):
         """run_discovery() calls fetch() on all adapters."""
-        from jobinator.configs.settings import DiscoveryConfig
         from jobinator.pipelines.discover import run_discovery
 
-        adapter_a = MockAdapter("source_a", [_raw("Acme", "Role A")])
-        adapter_b = MockAdapter("source_b", [_raw("Beta", "Role B")])
+        adapter_a = MockAdapter("source_a", [_raw("Acme", "Role A", "unique desc for acme role a")])
+        adapter_b = MockAdapter("source_b", [_raw("Beta", "Role B", "unique desc for beta role b")])
 
         engine = make_engine()
         with Session(engine) as session:
@@ -235,10 +239,11 @@ class TestRunDiscovery:
 
     def test_run_discovery_error_isolation(self, tmp_path):
         """run_discovery() isolates adapter failures — one failure does not block others."""
-        from jobinator.configs.settings import DiscoveryConfig
         from jobinator.pipelines.discover import run_discovery
 
-        good_adapter = MockAdapter("good_source", [_raw("Acme", "Data Scientist")])
+        good_adapter = MockAdapter(
+            "good_source", [_raw("Acme", "Data Scientist", "unique desc for good source")]
+        )
         bad_adapter = FailingAdapter()
 
         engine = make_engine()
@@ -262,7 +267,6 @@ class TestRunDiscovery:
 
     def test_cross_source_dedup(self, tmp_path):
         """Same job from two adapters is stored once in DB."""
-        from jobinator.configs.settings import DiscoveryConfig
         from jobinator.pipelines.discover import run_discovery
 
         same_job = _raw("Acme", "Data Scientist", "Same description text")
@@ -282,7 +286,7 @@ class TestRunDiscovery:
                 )
 
         with Session(engine) as session:
-            jobs = session.query(NormalizedJob).all()
+            jobs = session.exec(select(NormalizedJob)).all()
             assert len(jobs) == 1
 
         assert result.total_new == 1
@@ -290,16 +294,14 @@ class TestRunDiscovery:
 
     def test_stale_marking(self, tmp_path):
         """Jobs not re-sighted within stale_after_days TTL are marked is_stale=True."""
-        from jobinator.configs.settings import DiscoveryConfig
         from jobinator.pipelines.discover import run_discovery
-        from jobinator.pipelines.normalize import normalize_job
 
         engine = make_engine()
         old_date = datetime.utcnow() - timedelta(days=30)
 
         # Insert an old job directly
         with Session(engine) as session:
-            old_raw = _raw("Old Corp", "Ancient Role")
+            old_raw = _raw("Old Corp", "Ancient Role", "old corp ancient role desc")
             old_job = normalize_job(old_raw, "greenhouse")
             old_job.last_seen_at = old_date
             session.add(old_job)
@@ -320,9 +322,9 @@ class TestRunDiscovery:
         assert result.stale_marked >= 1
 
         with Session(engine) as session:
-            old_job = (
-                session.query(NormalizedJob).filter(NormalizedJob.company == "Old Corp").first()
-            )
+            old_job = session.exec(
+                select(NormalizedJob).where(NormalizedJob.company == "Old Corp")
+            ).first()
             assert old_job is not None
             assert old_job.is_stale is True
 
@@ -335,7 +337,6 @@ class TestRunDiscovery:
 class TestSourceHealth:
     def test_health_tracker_increments_consecutive_zeros(self, tmp_path):
         """Health tracker increments consecutive_zeros when adapter returns 0 jobs."""
-        from jobinator.configs.settings import DiscoveryConfig
         from jobinator.pipelines.discover import load_source_health, run_discovery
 
         empty_adapter = MockAdapter("empty_source", [])
@@ -353,7 +354,6 @@ class TestSourceHealth:
 
     def test_health_tracker_resets_on_results(self, tmp_path):
         """Health tracker resets consecutive_zeros counter when adapter returns > 0 jobs."""
-        from jobinator.configs.settings import DiscoveryConfig
         from jobinator.pipelines.discover import (
             load_source_health,
             run_discovery,
@@ -363,7 +363,9 @@ class TestSourceHealth:
         # Pre-seed health with 2 consecutive zeros
         save_source_health(str(tmp_path), {"my_source": 2})
 
-        jobs_adapter = MockAdapter("my_source", [_raw("Acme", "ML Engineer")])
+        jobs_adapter = MockAdapter(
+            "my_source", [_raw("Acme", "ML Engineer", "unique ml engineer description")]
+        )
 
         engine = make_engine()
         with Session(engine) as session:
