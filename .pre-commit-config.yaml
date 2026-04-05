@@ -9,5 +9,13 @@ repos:
     rev: v1.10.0
     hooks:
       - id: mypy
-        additional_dependencies: [sqlmodel, pydantic, pydantic-settings, typer]
+        additional_dependencies:
+          [
+            sqlmodel,
+            pydantic,
+            pydantic-settings,
+            typer,
+            alembic,
+            types-python-dateutil,
+          ]
         args: [--ignore-missing-imports]

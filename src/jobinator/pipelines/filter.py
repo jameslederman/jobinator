@@ -180,7 +180,7 @@ def load_filter_config(config_dir: str) -> FilterConfig:
         import tomllib  # stdlib in Python 3.11+
     except ImportError:
         try:
-            import tomli as tomllib  # fallback for older Python
+            import tomli as tomllib  # type: ignore[no-redef]  # fallback for older Python
         except ImportError:
             return FilterConfig()
 

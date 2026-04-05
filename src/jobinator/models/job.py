@@ -68,8 +68,12 @@ class NormalizedJob(SQLModel, table=True):
     # Salary quad (D-01)
     salary_min: Optional[int] = Field(default=None, description="Posted salary minimum")
     salary_max: Optional[int] = Field(default=None, description="Posted salary maximum")
-    estimated_salary_min: Optional[int] = Field(default=None, description="Estimated salary minimum")
-    estimated_salary_max: Optional[int] = Field(default=None, description="Estimated salary maximum")
+    estimated_salary_min: Optional[int] = Field(
+        default=None, description="Estimated salary minimum"
+    )
+    estimated_salary_max: Optional[int] = Field(
+        default=None, description="Estimated salary maximum"
+    )
     salary_source: Optional[str] = Field(default=None, description="SalarySource enum value as str")
 
     description: str = Field(description="Full job description text")
@@ -91,6 +95,7 @@ class NormalizedJob(SQLModel, table=True):
     )
 
     raw_json: str = Field(description="JSON string of original payload for debugging")
+    is_stale: bool = Field(default=False, description="True when job not re-sighted within TTL")
 
     @staticmethod
     def make_description_hash(description: str) -> str:
