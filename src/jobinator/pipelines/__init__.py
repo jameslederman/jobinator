@@ -1,6 +1,7 @@
 """Pipeline implementations for job normalization, dedup, and filtering."""
 
 from jobinator.pipelines.dedup import get_existing_job_keys, is_duplicate
+from jobinator.pipelines.discover import DiscoveryResult, SourceResult, run_discovery
 from jobinator.pipelines.filter import FilterConfig, FilterResult, apply_hard_filters
 from jobinator.pipelines.normalize import (
     make_company_slug,
@@ -19,4 +20,7 @@ __all__ = [
     "apply_hard_filters",
     "FilterConfig",
     "FilterResult",
+    "run_discovery",
+    "DiscoveryResult",
+    "SourceResult",
 ]
