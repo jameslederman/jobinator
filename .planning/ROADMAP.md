@@ -46,11 +46,11 @@ Plans:
   2. The same job posted on two different sources appears once in the database, not twice
   3. A job not re-sighted within the configured TTL window is marked stale and deprioritized in queries
   4. A source returning zero results across three consecutive runs triggers a health alert visible in terminal output
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 02-01-PLAN.md — Dependencies, schema migration, DiscoveryConfig, adapter Protocol, Greenhouse + Lever adapters
-- [ ] 02-02-PLAN.md — HN Who's Hiring adapter, Wellfound adapter
+- [x] 02-02-PLAN.md — HN Who's Hiring adapter, Wellfound adapter
 - [ ] 02-03-PLAN.md — Discovery orchestrator, stale marking, health tracking, CLI discover command
 
 ### Phase 3: LLM Scoring
@@ -97,7 +97,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-04-05 |
-| 2. Data Ingestion | 0/3 | Planning complete | - |
+| 2. Data Ingestion | 2/3 | In Progress|  |
 | 3. LLM Scoring | 0/TBD | Not started | - |
 | 4. Materials Generation | 0/TBD | Not started | - |
 | 5. Application Pipeline and CLI | 0/TBD | Not started | - |

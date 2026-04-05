@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 02-data-ingestion 02-01-PLAN.md
-last_updated: "2026-04-05T13:17:09.801Z"
+stopped_at: Completed 02-data-ingestion 02-02-PLAN.md
+last_updated: "2026-04-05T13:24:00.436Z"
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 6
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-04-04)
 ## Current Position
 
 Phase: 02 (data-ingestion) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Plan: 2 of 3
 | Phase 01-foundation P03 | 3 | 2 tasks | 6 files |
 | Phase 01-foundation P02 | 4 | 2 tasks | 8 files |
 | Phase 02-data-ingestion P01 | 8 | 2 tasks | 14 files |
+| Phase 02-data-ingestion P02 | 4 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
 - [Phase 02-data-ingestion]: DiscoveryConfig as standalone BaseModel (not Settings subclass) — consistent with FilterConfig pattern from Phase 1 Pitfall 7
 - [Phase 02-data-ingestion]: Lever posted_at always None — Lever public API does not expose posting date
 - [Phase 02-data-ingestion]: tenacity @retry on inner _fetch helpers, not fetch() method — isolates per-board retry without aborting multi-company loops
+- [Phase 02-data-ingestion]: HNHiringAdapter fragile=False — Algolia API is officially provided by HN and long-stable
+- [Phase 02-data-ingestion]: WellfoundAdapter fragile=True — __NEXT_DATA__ extraction will break on Next.js structure changes
+- [Phase 02-data-ingestion]: Wellfound pagination: stop when page returns < 10 nodes (no explicit total count in Apollo state)
 
 ### Pending Todos
 
@@ -84,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-05T13:17:09.799Z
-Stopped at: Completed 02-data-ingestion 02-01-PLAN.md
+Last session: 2026-04-05T13:24:00.434Z
+Stopped at: Completed 02-data-ingestion 02-02-PLAN.md
 Resume file: None

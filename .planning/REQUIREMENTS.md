@@ -9,9 +9,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Discovery
 
-- [ ] **DISC-01**: User can discover jobs from Wellfound/AngelList with structured output
-- [ ] **DISC-02**: User can discover jobs from Greenhouse/Lever ATS career pages with structured output
-- [ ] **DISC-03**: User can discover jobs from HN Who's Hiring threads with structured output
+- [x] **DISC-01**: User can discover jobs from Wellfound/AngelList with structured output
+- [x] **DISC-02**: User can discover jobs from Greenhouse/Lever ATS career pages with structured output
+- [x] **DISC-03**: User can discover jobs from HN Who's Hiring threads with structured output
 - [x] **DISC-04**: All discovered jobs are normalized to a standard schema (title, company, location, description, requirements, salary_range, url, source)
 - [x] **DISC-05**: Jobs are deduplicated across sources using compound key (company_normalized, title_normalized) plus description content hash
 - [x] **DISC-06**: Jobs include freshness metadata (posted date, first_seen, last_seen) and stale postings are deprioritized
@@ -89,9 +89,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DISC-01 | Phase 2 | Pending |
-| DISC-02 | Phase 2 | Pending |
-| DISC-03 | Phase 2 | Pending |
+| DISC-01 | Phase 2 | Complete |
+| DISC-02 | Phase 2 | Complete |
+| DISC-03 | Phase 2 | Complete |
 | DISC-04 | Phase 1 | Complete |
 | DISC-05 | Phase 1 | Complete |
 | DISC-06 | Phase 1 | Complete |
