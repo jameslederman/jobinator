@@ -556,3 +556,142 @@ class TestHNHiringAdapter:
         adapter = HNHiringAdapter()
         assert adapter.source_id == "hn_hiring"
         assert adapter.fragile is False
+
+
+# ---------------------------------------------------------------------------
+# Wellfound Adapter tests
+# ---------------------------------------------------------------------------
+
+WELLFOUND_KEYWORD_URL = "https://wellfound.com/role/l/machine-learning/remote"
+WELLFOUND_COMPANY_URL = "https://wellfound.com/company/dataco/jobs"
+
+
+class TestWellfoundAdapter:
+    """Tests for WellfoundAdapter using respx mocks."""
+
+    def test_extract_next_data_parses_json(self):
+        """extract_wellfound_next_data() parses __NEXT_DATA__ JSON from HTML."""
+        from jobinator.adapters.wellfound import extract_wellfound_next_data
+
+        fixture_path = FIXTURES_DIR / "wellfound_page.html"
+        html = fixture_path.read_text()
+
+        result = extract_wellfound_next_data(html)
+        assert isinstance(result, dict)
+        assert "props" in result
+
+    def test_extract_next_data_raises_on_missing_script_tag(self):
+        """extract_wellfound_next_data() raises AdapterBrokenError when script tag missing."""
+        from jobinator.adapters.base import AdapterBrokenError
+        from jobinator.adapters.wellfound import extract_wellfound_next_data
+
+        html = "<html><body><p>No script tag here</p></body></html>"
+
+        with pytest.raises(AdapterBrokenError, match="__NEXT_DATA__"):
+            extract_wellfound_next_data(html)
+
+    def test_extract_job_nodes_finds_job_listings(self):
+        """extract_job_nodes() finds JobListingSearchResult keys in Apollo state."""
+        from jobinator.adapters.wellfound import extract_job_nodes, extract_wellfound_next_data
+
+        fixture_path = FIXTURES_DIR / "wellfound_page.html"
+        html = fixture_path.read_text()
+
+        next_data = extract_wellfound_next_data(html)
+        jobs = extract_job_nodes(next_data)
+
+        assert len(jobs) == 2
+        titles = [j["title"] for j in jobs]
+        assert "Senior Data Scientist" in titles
+        assert "ML Engineer" in titles
+
+    def test_extract_job_nodes_resolves_company_name(self):
+        """extract_job_nodes() dereferences startup __ref to get company name."""
+        from jobinator.adapters.wellfound import extract_job_nodes, extract_wellfound_next_data
+
+        fixture_path = FIXTURES_DIR / "wellfound_page.html"
+        html = fixture_path.read_text()
+
+        next_data = extract_wellfound_next_data(html)
+        jobs = extract_job_nodes(next_data)
+
+        company_names = [j["company_name"] for j in jobs]
+        assert "DataCo" in company_names
+        assert "MLOps Inc" in company_names
+
+    def test_fetch_returns_raw_job_dicts_from_keyword_search(self, respx_mock):
+        """WellfoundAdapter.fetch() returns RawJobDicts from keyword search URL."""
+        from jobinator.adapters.wellfound import WellfoundAdapter
+
+        fixture_path = FIXTURES_DIR / "wellfound_page.html"
+        html = fixture_path.read_text()
+
+        respx_mock.get(WELLFOUND_KEYWORD_URL).mock(
+            return_value=__import__("httpx").Response(200, text=html)
+        )
+
+        adapter = WellfoundAdapter(
+            keywords=["machine-learning"],
+            companies=[],
+            delay_min=0.0,
+            delay_max=0.0,
+        )
+        results = adapter.fetch()
+
+        assert len(results) == 2
+        titles = [r["title"] for r in results]
+        assert "Senior Data Scientist" in titles
+        assert "ML Engineer" in titles
+
+    def test_fetch_fetches_company_page_urls(self, respx_mock):
+        """WellfoundAdapter.fetch() also fetches company page URLs for wellfound_companies."""
+        from jobinator.adapters.wellfound import WellfoundAdapter
+
+        fixture_path = FIXTURES_DIR / "wellfound_page.html"
+        html = fixture_path.read_text()
+
+        respx_mock.get(WELLFOUND_COMPANY_URL).mock(
+            return_value=__import__("httpx").Response(200, text=html)
+        )
+
+        adapter = WellfoundAdapter(
+            keywords=[],
+            companies=["dataco"],
+            delay_min=0.0,
+            delay_max=0.0,
+        )
+        results = adapter.fetch()
+
+        assert len(results) == 2
+
+    def test_source_id_and_fragile(self):
+        """WellfoundAdapter sets source_id='wellfound' and fragile=True."""
+        from jobinator.adapters.wellfound import WellfoundAdapter
+
+        adapter = WellfoundAdapter(keywords=[], companies=[])
+        assert adapter.source_id == "wellfound"
+        assert adapter.fragile is True
+
+    def test_uses_realistic_user_agent(self, respx_mock):
+        """WellfoundAdapter uses realistic User-Agent header."""
+        import httpx as _httpx
+        from jobinator.adapters.wellfound import USER_AGENT, WellfoundAdapter
+
+        fixture_path = FIXTURES_DIR / "wellfound_page.html"
+        html = fixture_path.read_text()
+
+        route = respx_mock.get(WELLFOUND_KEYWORD_URL)
+        route.mock(return_value=_httpx.Response(200, text=html))
+
+        adapter = WellfoundAdapter(
+            keywords=["machine-learning"],
+            companies=[],
+            delay_min=0.0,
+            delay_max=0.0,
+        )
+        adapter.fetch()
+
+        # Verify at least one request was made with the correct User-Agent
+        assert route.called
+        sent_ua = route.calls[0].request.headers.get("user-agent", "")
+        assert USER_AGENT in sent_ua or "Mozilla" in sent_ua
