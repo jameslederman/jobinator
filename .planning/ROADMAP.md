@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project scaffold, SQLModel tables, DB engine, Alembic, settings
+- [x] 01-01-PLAN.md — Project scaffold, SQLModel tables, DB engine, Alembic, settings
 - [ ] 01-02-PLAN.md — Normalization pipeline, deduplication, heuristic filter
 - [ ] 01-03-PLAN.md — Budget tracker infrastructure, output directory manager
 

@@ -14,7 +14,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DISC-03**: User can discover jobs from HN Who's Hiring threads with structured output
 - [ ] **DISC-04**: All discovered jobs are normalized to a standard schema (title, company, location, description, requirements, salary_range, url, source)
 - [ ] **DISC-05**: Jobs are deduplicated across sources using compound key (company_normalized, title_normalized) plus description content hash
-- [ ] **DISC-06**: Jobs include freshness metadata (posted date, first_seen, last_seen) and stale postings are deprioritized
+- [x] **DISC-06**: Jobs include freshness metadata (posted date, first_seen, last_seen) and stale postings are deprioritized
 
 ### Scoring
 
@@ -46,7 +46,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **INFR-01**: LLM calls route through multi-provider abstraction (cheap models for filtering/scoring, strong models for generation)
 - [ ] **INFR-02**: Token and API spend is tracked per call with configurable daily and per-job budget limits
 - [ ] **INFR-03**: Budget enforcement gates LLM calls — hard stop when limit is reached
-- [ ] **INFR-04**: All job and application state persists in SQLite via SQLModel with schema migrations
+- [x] **INFR-04**: All job and application state persists in SQLite via SQLModel with schema migrations
 - [ ] **INFR-05**: CLI interface provides commands: discover, score, apply, run --auto, review, status
 - [ ] **INFR-06**: Agent loop is interruptible and logs all decisions
 
@@ -94,7 +94,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DISC-03 | Phase 2 | Pending |
 | DISC-04 | Phase 1 | Pending |
 | DISC-05 | Phase 1 | Pending |
-| DISC-06 | Phase 1 | Pending |
+| DISC-06 | Phase 1 | Complete |
 | SCOR-01 | Phase 1 | Pending |
 | SCOR-02 | Phase 3 | Pending |
 | SCOR-03 | Phase 3 | Pending |
@@ -114,7 +114,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-01 | Phase 3 | Pending |
 | INFR-02 | Phase 3 | Pending |
 | INFR-03 | Phase 3 | Pending |
-| INFR-04 | Phase 1 | Pending |
+| INFR-04 | Phase 1 | Complete |
 | INFR-05 | Phase 5 | Pending |
 | INFR-06 | Phase 1 | Pending |
 
