@@ -10,6 +10,9 @@ import platformdirs
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
 from pydantic_settings.main import BaseSettings
 
+# FilterConfig is imported lazily to avoid circular imports at module load time.
+# Use get_filter_config() to access the filter configuration.
+
 
 class Settings(BaseSettings):
     """Application settings loaded from config.toml and .env.
@@ -95,3 +98,18 @@ def get_settings() -> Settings:
     Settings directly — it ensures a single config object per process.
     """
     return Settings()
+
+
+def get_filter_config():
+    """Return FilterConfig loaded from config.toml in the user config directory.
+
+    Reads the [filter] section of ~/.config/jobinator/config.toml. Falls back
+    to default FilterConfig values if the file is absent or has no [filter] section.
+
+    Returns:
+        jobinator.pipelines.filter.FilterConfig instance
+    """
+    from jobinator.pipelines.filter import load_filter_config
+
+    settings = get_settings()
+    return load_filter_config(settings.config_dir)
