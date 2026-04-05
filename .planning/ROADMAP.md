@@ -12,7 +12,7 @@ Jobinator is built bottom-up along its own dependency graph. The state layer and
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Database schema, normalization pipeline, heuristic filtering, budget tracker infrastructure, and output directory conventions
+- [x] **Phase 1: Foundation** - Database schema, normalization pipeline, heuristic filtering, budget tracker infrastructure, and output directory conventions (completed 2026-04-05)
 - [ ] **Phase 2: Data Ingestion** - Source adapters for Wellfound, Greenhouse/Lever, and HN Hiring with deduplication and freshness tracking
 - [ ] **Phase 3: LLM Scoring** - Multi-provider LLM abstraction, semantic fit scoring with reasoning, and live budget enforcement
 - [ ] **Phase 4: Materials Generation** - Tailored resume, cover letter, and interview prep brief generation with human-in-the-loop review
@@ -30,11 +30,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A job failing hard filter criteria (salary floor, location type, title keywords) is rejected by the heuristic filter with a logged reason — no LLM called
   4. The output directory is created at the configured path and a placeholder materials folder is written with correct company/role/timestamp structure
   5. Attempting an LLM call against a mock budget at its daily limit raises a hard stop before any external call is made
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 01-01-PLAN.md — Project scaffold, SQLModel tables, DB engine, Alembic, settings
-- [ ] 01-02-PLAN.md — Normalization pipeline, deduplication, heuristic filter
+- [x] 01-02-PLAN.md — Normalization pipeline, deduplication, heuristic filter
 - [x] 01-03-PLAN.md — Budget tracker infrastructure, output directory manager
 
 ### Phase 2: Data Ingestion
@@ -91,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/3 | In Progress|  |
+| 1. Foundation | 3/3 | Complete   | 2026-04-05 |
 | 2. Data Ingestion | 0/TBD | Not started | - |
 | 3. LLM Scoring | 0/TBD | Not started | - |
 | 4. Materials Generation | 0/TBD | Not started | - |

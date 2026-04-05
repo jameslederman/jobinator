@@ -12,13 +12,13 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DISC-01**: User can discover jobs from Wellfound/AngelList with structured output
 - [ ] **DISC-02**: User can discover jobs from Greenhouse/Lever ATS career pages with structured output
 - [ ] **DISC-03**: User can discover jobs from HN Who's Hiring threads with structured output
-- [ ] **DISC-04**: All discovered jobs are normalized to a standard schema (title, company, location, description, requirements, salary_range, url, source)
-- [ ] **DISC-05**: Jobs are deduplicated across sources using compound key (company_normalized, title_normalized) plus description content hash
+- [x] **DISC-04**: All discovered jobs are normalized to a standard schema (title, company, location, description, requirements, salary_range, url, source)
+- [x] **DISC-05**: Jobs are deduplicated across sources using compound key (company_normalized, title_normalized) plus description content hash
 - [x] **DISC-06**: Jobs include freshness metadata (posted date, first_seen, last_seen) and stale postings are deprioritized
 
 ### Scoring
 
-- [ ] **SCOR-01**: User can configure hard filters (salary floor, location type, title keywords, exclusion keywords)
+- [x] **SCOR-01**: User can configure hard filters (salary floor, location type, title keywords, exclusion keywords)
 - [ ] **SCOR-02**: Jobs passing hard filters are scored by LLM for nuanced fit (0-1 score)
 - [ ] **SCOR-03**: Each scored job includes strengths match, gaps analysis, and compensation estimate
 - [ ] **SCOR-04**: Each scored job has a priority score combining fit, urgency, recency, and user preferences
@@ -92,10 +92,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DISC-01 | Phase 2 | Pending |
 | DISC-02 | Phase 2 | Pending |
 | DISC-03 | Phase 2 | Pending |
-| DISC-04 | Phase 1 | Pending |
-| DISC-05 | Phase 1 | Pending |
+| DISC-04 | Phase 1 | Complete |
+| DISC-05 | Phase 1 | Complete |
 | DISC-06 | Phase 1 | Complete |
-| SCOR-01 | Phase 1 | Pending |
+| SCOR-01 | Phase 1 | Complete |
 | SCOR-02 | Phase 3 | Pending |
 | SCOR-03 | Phase 3 | Pending |
 | SCOR-04 | Phase 3 | Pending |
