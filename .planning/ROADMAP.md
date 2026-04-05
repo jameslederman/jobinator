@@ -49,7 +49,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Dependencies, schema migration, DiscoveryConfig, adapter Protocol, Greenhouse + Lever adapters
+- [x] 02-01-PLAN.md — Dependencies, schema migration, DiscoveryConfig, adapter Protocol, Greenhouse + Lever adapters
 - [ ] 02-02-PLAN.md — HN Who's Hiring adapter, Wellfound adapter
 - [ ] 02-03-PLAN.md — Discovery orchestrator, stale marking, health tracking, CLI discover command
 
