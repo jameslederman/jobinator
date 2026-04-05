@@ -1,0 +1,13 @@
+[
+  {
+    "id": "abc-123-def",
+    "text": "Machine Learning Engineer",
+    "categories": {"location": "New York, NY", "team": "ML Platform"},
+    "workplaceType": "hybrid",
+    "descriptionPlain": "Build and deploy ML models at scale...",
+    "lists": [{"text": "Requirements", "content": "<li>5+ years Python</li>"}],
+    "hostedUrl": "https://jobs.lever.co/figma/abc-123-def",
+    "applyUrl": "https://jobs.lever.co/figma/abc-123-def/apply",
+    "salaryRange": {"currency": "USD", "interval": "per-year", "min": 180000, "max": 250000}
+  }
+]
