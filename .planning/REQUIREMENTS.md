@@ -26,12 +26,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Materials
 
-- [ ] **MATL-01**: User can generate a tailored resume from JSON Resume base that emphasizes relevant experience per role
-- [ ] **MATL-02**: Generated resumes are truthful — no hallucinated metrics, dates, or skills
-- [ ] **MATL-03**: User can generate a concise, company+role-specific cover letter per job
-- [ ] **MATL-04**: User can generate an interview prep brief per job (company overview, likely questions, talking points)
+- [x] **MATL-01**: User can generate a tailored resume from JSON Resume base that emphasizes relevant experience per role
+- [x] **MATL-02**: Generated resumes are truthful — no hallucinated metrics, dates, or skills
+- [x] **MATL-03**: User can generate a concise, company+role-specific cover letter per job
+- [x] **MATL-04**: User can generate an interview prep brief per job (company overview, likely questions, talking points)
 - [ ] **MATL-05**: All generated materials are rendered to PDF
-- [ ] **MATL-06**: Materials are saved to configurable output directory organized by company/role with versioning
+- [x] **MATL-06**: Materials are saved to configurable output directory organized by company/role with versioning
 
 ### Application
 
@@ -100,12 +100,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCOR-03 | Phase 3 | Complete |
 | SCOR-04 | Phase 3 | Complete |
 | SCOR-05 | Phase 3 | Complete |
-| MATL-01 | Phase 4 | Pending |
-| MATL-02 | Phase 4 | Pending |
-| MATL-03 | Phase 4 | Pending |
-| MATL-04 | Phase 4 | Pending |
+| MATL-01 | Phase 4 | Complete |
+| MATL-02 | Phase 4 | Complete |
+| MATL-03 | Phase 4 | Complete |
+| MATL-04 | Phase 4 | Complete |
 | MATL-05 | Phase 4 | Pending |
-| MATL-06 | Phase 4 | Pending |
+| MATL-06 | Phase 4 | Complete |
 | APPL-01 | Phase 5 | Pending |
 | APPL-02 | Phase 5 | Pending |
 | APPL-03 | Phase 5 | Pending |

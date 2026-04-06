@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Completed 03-llm-scoring 03-02-PLAN.md
-last_updated: "2026-04-06T14:14:44.669Z"
+status: Ready to execute
+stopped_at: Completed 04-materials-generation 04-01-PLAN.md
+last_updated: "2026-04-06T18:50:45.973Z"
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 11
+  completed_plans: 9
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-04)
 
 **Core value:** Surface high-fit opportunities I'd miss manually and generate application materials good enough to submit with minimal editing.
-**Current focus:** Phase 03 — llm-scoring
+**Current focus:** Phase 04 — materials-generation
 
 ## Current Position
 
-Phase: 4
-Plan: Not started
+Phase: 04 (materials-generation) — EXECUTING
+Plan: 2 of 3
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Plan: Not started
 | Phase 02-data-ingestion P03 | 9 | 2 tasks | 5 files |
 | Phase 03-llm-scoring P01 | 3 | 2 tasks | 10 files |
 | Phase 03-llm-scoring P02 | 6 | 2 tasks | 9 files |
+| Phase 04-materials-generation P01 | 7 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,9 @@ Recent decisions affecting current work:
 - [Phase 03-llm-scoring]: JobScoreOutput as plain Pydantic BaseModel not SQLModel table — Instructor response_model is separate from DB persistence model
 - [Phase 03-llm-scoring]: Local priority score computation overrides LLM priority_score — LLM lacks recency/urgency context; local _compute_priority() uses configurable weights with 30-day recency decay and 14-day urgency decay
 - [Phase 03-llm-scoring]: CLI tests use module-level monkey-patching instead of unittest.mock.patch() — lazy imports inside score() function body prevent patching at jobinator.cli module level
+- [Phase 04-materials-generation]: MaterialsConfig as standalone BaseModel (not Settings subclass) — consistent with ScoringConfig/DiscoveryConfig pattern for test-overridable config without requiring config files
+- [Phase 04-materials-generation]: Generation response models (ResumeContent, CoverLetterContent, PrepBriefContent) as plain Pydantic BaseModel not SQLModel — same pattern as JobScoreOutput, Instructor response_model separate from DB persistence model
+- [Phase 04-materials-generation]: WeasyPrint macOS fix: sitecustomize.py in venv sets DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib at Python startup — requires brew install pango on fresh macOS setups
 
 ### Pending Todos
 
@@ -100,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-06T14:11:05.108Z
-Stopped at: Completed 03-llm-scoring 03-02-PLAN.md
+Last session: 2026-04-06T18:50:45.971Z
+Stopped at: Completed 04-materials-generation 04-01-PLAN.md
 Resume file: None
