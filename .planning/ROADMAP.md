@@ -63,10 +63,10 @@ Plans:
   3. LLM calls for scoring route to the cheap model tier (Haiku or GPT-4o-mini), not the strong tier
   4. Every LLM call records token count and dollar cost to SQLite, and a daily spend total is queryable
   5. When the configured daily budget is hit, the `score` command stops and reports spend before making any further LLM calls
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 03-01-PLAN.md — JobScore model, ScoringConfig, LLM client wrapper (Instructor + LiteLLM), Alembic migration
+- [x] 03-01-PLAN.md — JobScore model, ScoringConfig, LLM client wrapper (Instructor + LiteLLM), Alembic migration
 - [ ] 03-02-PLAN.md — Scoring prompt builder, scorer, pipeline orchestrator, CLI score command with budget gating
 
 ### Phase 4: Materials Generation
@@ -102,6 +102,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-04-05 |
 | 2. Data Ingestion | 2/3 | In Progress|  |
-| 3. LLM Scoring | 0/2 | Not started | - |
+| 3. LLM Scoring | 1/2 | In Progress|  |
 | 4. Materials Generation | 0/TBD | Not started | - |
 | 5. Application Pipeline and CLI | 0/TBD | Not started | - |

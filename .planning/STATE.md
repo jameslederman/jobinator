@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Completed 02-data-ingestion 02-03-PLAN.md
-last_updated: "2026-04-05T13:41:28.492Z"
+status: Ready to execute
+stopped_at: Completed 03-llm-scoring 03-01-PLAN.md
+last_updated: "2026-04-06T14:02:22.097Z"
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-04)
 
 **Core value:** Surface high-fit opportunities I'd miss manually and generate application materials good enough to submit with minimal editing.
-**Current focus:** Phase 02 — data-ingestion
+**Current focus:** Phase 03 — llm-scoring
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
+Phase: 03 (llm-scoring) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Plan: Not started
 | Phase 02-data-ingestion P01 | 8 | 2 tasks | 14 files |
 | Phase 02-data-ingestion P02 | 4 | 2 tasks | 6 files |
 | Phase 02-data-ingestion P03 | 9 | 2 tasks | 5 files |
+| Phase 03-llm-scoring P01 | 3 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,9 @@ Recent decisions affecting current work:
 - [Phase 02-data-ingestion]: In-memory extension of existing_keys list within persist_jobs() deduplicates same-batch duplicates without extra DB round-trips
 - [Phase 02-data-ingestion]: Consecutive-zero health counter only incremented on successful 0-result runs, not on adapter errors
 - [Phase 02-data-ingestion]: ruff pre-commit hook updated from v0.5.0 to v0.15.9 to match local ruff and resolve import ordering conflicts
+- [Phase 03-llm-scoring]: Cost extraction via _hidden_params['response_cost'] not litellm.completion_cost() — known instructor#1330 bug where completion_cost() returns 0.0 through Instructor wrapper
+- [Phase 03-llm-scoring]: ScoringConfig as standalone BaseModel (not Settings subclass) — consistent with FilterConfig and DiscoveryConfig patterns for test-overridable config
+- [Phase 03-llm-scoring]: JobScoreOutput as plain Pydantic BaseModel not SQLModel table — Instructor response_model is separate from DB persistence model
 
 ### Pending Todos
 
@@ -93,6 +97,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-05T13:37:05.981Z
-Stopped at: Completed 02-data-ingestion 02-03-PLAN.md
+Last session: 2026-04-06T14:02:22.095Z
+Stopped at: Completed 03-llm-scoring 03-01-PLAN.md
 Resume file: None

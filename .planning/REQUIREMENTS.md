@@ -43,8 +43,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Infrastructure
 
-- [ ] **INFR-01**: LLM calls route through multi-provider abstraction (cheap models for filtering/scoring, strong models for generation)
-- [ ] **INFR-02**: Token and API spend is tracked per call with configurable daily and per-job budget limits
+- [x] **INFR-01**: LLM calls route through multi-provider abstraction (cheap models for filtering/scoring, strong models for generation)
+- [x] **INFR-02**: Token and API spend is tracked per call with configurable daily and per-job budget limits
 - [ ] **INFR-03**: Budget enforcement gates LLM calls — hard stop when limit is reached
 - [x] **INFR-04**: All job and application state persists in SQLite via SQLModel with schema migrations
 - [ ] **INFR-05**: CLI interface provides commands: discover, score, apply, run --auto, review, status
@@ -111,8 +111,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | APPL-03 | Phase 5 | Pending |
 | APPL-04 | Phase 5 | Pending |
 | APPL-05 | Phase 5 | Pending |
-| INFR-01 | Phase 3 | Pending |
-| INFR-02 | Phase 3 | Pending |
+| INFR-01 | Phase 3 | Complete |
+| INFR-02 | Phase 3 | Complete |
 | INFR-03 | Phase 3 | Pending |
 | INFR-04 | Phase 1 | Complete |
 | INFR-05 | Phase 5 | Pending |
