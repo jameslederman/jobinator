@@ -83,5 +83,103 @@ def discover(
     fire_health_alerts(health, console)
 
 
+@app.command()
+def score(
+    limit: int = typer.Option(10, "--limit", "-n", help="Max jobs to score this run"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show unscored jobs without calling LLM"),
+) -> None:
+    """Score discovered jobs for fit using LLM."""
+    from rich.table import Table
+
+    from jobinator.budget.tracker import BudgetConfig, BudgetTracker
+    from jobinator.configs.settings import get_scoring_config, get_settings
+    from jobinator.db import get_engine, get_session, init_db
+    from jobinator.pipelines.score import get_unscored_jobs, load_profile, run_scoring
+    from jobinator.scoring.client import LLMClient
+    from jobinator.scoring.scorer import JobScorer
+
+    settings = get_settings()
+    scoring_config = get_scoring_config(settings.config_dir)
+
+    # Override batch size from CLI flag
+    scoring_config = scoring_config.model_copy(update={"score_batch_size": limit})
+
+    # Validate API key presence before any DB/LLM work (fail fast)
+    has_anthropic = bool(settings.anthropic_api_key)
+    has_openai = bool(settings.openai_api_key)
+    if not has_anthropic and not has_openai:
+        console.print(
+            "[red]No API key configured.[/red] "
+            "Set ANTHROPIC_API_KEY or OPENAI_API_KEY in .env file."
+        )
+        raise typer.Exit(code=1)
+
+    engine = get_engine(settings.database_url)
+    init_db(engine)
+
+    with get_session(engine) as session:
+        # Dry run: just show unscored jobs without calling LLM
+        if dry_run:
+            jobs = get_unscored_jobs(session, limit)
+            if not jobs:
+                console.print("[yellow]No unscored jobs found.[/yellow]")
+                raise typer.Exit(code=0)
+            table = Table(title=f"Unscored Jobs ({len(jobs)})")
+            table.add_column("ID", style="dim", max_width=8)
+            table.add_column("Title", style="cyan")
+            table.add_column("Company", style="green")
+            table.add_column("Source", style="yellow")
+            for job in jobs:
+                table.add_row(job.id[:8], job.title, job.company, job.source)
+            console.print(table)
+            raise typer.Exit(code=0)
+
+        # Validate profile before starting scoring loop
+        profile_data = load_profile(scoring_config.profile_path)
+        if profile_data is None:
+            path_display = scoring_config.profile_path or "not configured"
+            console.print(
+                f"[red]Profile not found:[/red] {path_display}\n"
+                "Create a JSON Resume file and set [scoring] profile_path in "
+                f"{settings.config_dir}/config.toml"
+            )
+            raise typer.Exit(code=1)
+
+        budget_config = BudgetConfig(
+            daily_limit_usd=settings.daily_budget_usd,
+            per_job_limit_usd=settings.per_job_budget_usd,
+            warn_threshold=settings.budget_warn_threshold,
+        )
+        budget_tracker = BudgetTracker(config=budget_config, session=session)
+        llm_client = LLMClient(model=scoring_config.cheap_model)
+        scorer = JobScorer(
+            llm_client=llm_client,
+            budget_tracker=budget_tracker,
+            config=scoring_config,
+        )
+
+        result = run_scoring(session, budget_tracker, scorer, scoring_config)
+
+    # Print results
+    if result.errors:
+        for error in result.errors:
+            console.print(f"[red]{error}[/red]")
+
+    if result.budget_stopped:
+        console.print(
+            f"\n[red]Budget limit reached.[/red] "
+            f"Daily spend: ${budget_tracker.daily_spend():.4f}"
+        )
+
+    console.print(
+        f"\n[bold]Scored:[/bold] {result.scored} jobs"
+        f" | [bold]Skipped:[/bold] {result.skipped}"
+        f" | [bold]Errors:[/bold] {len(result.errors)}"
+    )
+
+    if result.budget_stopped:
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()
