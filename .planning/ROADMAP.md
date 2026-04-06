@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Database schema, normalization pipeline, heuristic filtering, budget tracker infrastructure, and output directory conventions (completed 2026-04-05)
 - [ ] **Phase 2: Data Ingestion** - Source adapters for Wellfound, Greenhouse/Lever, and HN Hiring with deduplication and freshness tracking
 - [x] **Phase 3: LLM Scoring** - Multi-provider LLM abstraction, semantic fit scoring with reasoning, and live budget enforcement (completed 2026-04-06)
-- [ ] **Phase 4: Materials Generation** - Tailored resume, cover letter, and interview prep brief generation with human-in-the-loop review
+- [x] **Phase 4: Materials Generation** - Tailored resume, cover letter, and interview prep brief generation with human-in-the-loop review (completed 2026-04-06)
 - [ ] **Phase 5: Application Pipeline and CLI** - Application status tracking, decision logging, feedback loop, and complete CLI surface
 
 ## Phase Details
@@ -79,12 +79,12 @@ Plans:
   3. All three materials are rendered to PDF and the files are present on disk after generation
   4. The user is shown a preview of generated materials and must explicitly confirm before any file is written — the system does not write outputs silently
   5. Re-running `apply` for the same job creates a new versioned folder rather than overwriting the previous run
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 04-01-PLAN.md — GeneratedMaterial model, response models, MaterialsConfig, Alembic migration, dependencies
 - [x] 04-02-PLAN.md — Prompt builders, MaterialsGenerator, Jinja2 templates, WeasyPrint renderer
-- [ ] 04-03-PLAN.md — Apply pipeline orchestrator, CLI apply command, end-to-end verification
+- [x] 04-03-PLAN.md — Apply pipeline orchestrator, CLI apply command, end-to-end verification
 
 ### Phase 5: Application Pipeline and CLI
 **Goal**: The full pipeline is wired into a complete, usable CLI — application status is tracked end-to-end, every decision is logged with reasoning, and outcome data is captured for future feedback
@@ -108,5 +108,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete   | 2026-04-05 |
 | 2. Data Ingestion | 2/3 | In Progress|  |
 | 3. LLM Scoring | 2/2 | Complete   | 2026-04-06 |
-| 4. Materials Generation | 2/3 | In Progress|  |
+| 4. Materials Generation | 3/3 | Complete   | 2026-04-06 |
 | 5. Application Pipeline and CLI | 0/TBD | Not started | - |

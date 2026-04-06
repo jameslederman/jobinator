@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 04-materials-generation 04-02-PLAN.md
-last_updated: "2026-04-06T18:59:46.554Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 04-materials-generation 04-03-PLAN.md (awaiting human verify Task 3)
+last_updated: "2026-04-06T19:10:53.550Z"
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 11
-  completed_plans: 10
+  completed_plans: 11
 ---
 
 # Project State
@@ -56,6 +56,7 @@ Plan: 3 of 3
 | Phase 03-llm-scoring P02 | 6 | 2 tasks | 9 files |
 | Phase 04-materials-generation P01 | 7 | 2 tasks | 7 files |
 | Phase 04-materials-generation P02 | 6 | 2 tasks | 8 files |
+| Phase 04-materials-generation P03 | 35 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,9 @@ Recent decisions affecting current work:
 - [Phase 04-materials-generation]: WeasyPrint macOS fix: sitecustomize.py in venv sets DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib at Python startup — requires brew install pango on fresh macOS setups
 - [Phase 04-materials-generation]: MagicMock(spec=BudgetTracker) required for assert_within_limits — MagicMock treats assert_* attributes as pytest assertions without spec
 - [Phase 04-materials-generation]: Prompt grounding rules embedded in system message with full profile JSON (not truncated) — satisfies MATL-02 verifiability
+- [Phase 04-materials-generation]: confirm_callback injectable (default=typer.confirm) enables HITL gate unit testing without terminal interaction
+- [Phase 04-materials-generation]: OutputManager.create_application_dir called AFTER user confirmation — no stale directories on cancel
+- [Phase 04-materials-generation]: Each generator call individually budget-gated so BudgetExceeded stops mid-generation without partial files
 
 ### Pending Todos
 
@@ -107,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-06T18:59:46.552Z
-Stopped at: Completed 04-materials-generation 04-02-PLAN.md
+Last session: 2026-04-06T19:10:53.548Z
+Stopped at: Completed 04-materials-generation 04-03-PLAN.md (awaiting human verify Task 3)
 Resume file: None
