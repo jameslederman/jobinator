@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 # Import all models to register them with SQLModel.metadata
 # noqa: F401 — these imports are side-effect imports to register table metadata
-from jobinator.models import budget, job  # noqa: F401
+from jobinator.models import budget, job, material, score  # noqa: F401
 
 # This is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
