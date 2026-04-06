@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cover Letter - {{ company }}</title>
+<style>
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 60px; color: #333; line-height: 1.6; max-width: 700px; }
+  .date { margin-bottom: 20px; color: #666; }
+  p { margin-bottom: 12px; font-size: 14px; }
+  .closing { margin-top: 24px; }
+  @page { size: letter; margin: 1in; }
+</style>
+</head>
+<body>
+  <div class="date">{{ date }}</div>
+  <p>{{ opening }}</p>
+  {% for paragraph in body_paragraphs %}
+  <p>{{ paragraph }}</p>
+  {% endfor %}
+  <p class="closing">{{ closing }}</p>
+  <p>{{ basics.name }}</p>
+</body>
+</html>

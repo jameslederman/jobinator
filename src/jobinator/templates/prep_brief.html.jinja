@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Interview Prep - {{ company }} {{ job_title }}</title>
+<style>
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 40px; color: #333; line-height: 1.5; max-width: 800px; }
+  h1 { font-size: 20px; color: #1a1a1a; }
+  h2 { font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-top: 20px; }
+  p { font-size: 14px; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 6px; font-size: 14px; }
+  .gap { color: #c0392b; }
+  @page { size: letter; margin: 0.75in; }
+</style>
+</head>
+<body>
+  <h1>Interview Prep: {{ job_title }} at {{ company }}</h1>
+
+  <h2>Company Overview</h2>
+  <p>{{ company_overview }}</p>
+
+  <h2>Role Summary</h2>
+  <p>{{ role_summary }}</p>
+
+  <h2>Likely Questions</h2>
+  <ul>
+    {% for q in likely_questions %}
+    <li>{{ q }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Talking Points</h2>
+  <ul>
+    {% for tp in talking_points %}
+    <li>{{ tp }}</li>
+    {% endfor %}
+  </ul>
+
+  {% if gaps_to_address %}
+  <h2>Gaps to Address</h2>
+  <ul>
+    {% for gap in gaps_to_address %}
+    <li class="gap">{{ gap }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</body>
+</html>

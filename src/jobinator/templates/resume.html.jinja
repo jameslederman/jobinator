@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{ basics.name }} - Resume</title>
+<style>
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 40px; color: #333; line-height: 1.5; max-width: 800px; }
+  h1 { font-size: 24px; margin-bottom: 4px; color: #1a1a1a; }
+  h2 { font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-top: 20px; color: #2a2a2a; }
+  .subtitle { font-size: 14px; color: #666; margin-bottom: 16px; }
+  .experience-entry { margin-bottom: 16px; }
+  .experience-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .company { font-weight: bold; }
+  .dates { color: #666; font-size: 13px; }
+  ul { margin: 4px 0; padding-left: 20px; }
+  li { margin-bottom: 2px; font-size: 14px; }
+  .skills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill { background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-size: 13px; }
+  @page { size: letter; margin: 0.75in; }
+</style>
+</head>
+<body>
+  <h1>{{ basics.name }}</h1>
+  <div class="subtitle">{{ basics.label }}{% if basics.email %} | {{ basics.email }}{% endif %}{% if basics.get('phone') %} | {{ basics.phone }}{% endif %}</div>
+
+  <h2>Summary</h2>
+  <p>{{ summary }}</p>
+
+  <h2>Experience</h2>
+  {% for entry in relevant_experience %}
+  <div class="experience-entry">
+    <div class="experience-header">
+      <span><span class="company">{{ entry.company }}</span> - {{ entry.position }}</span>
+      <span class="dates">{{ entry.start_date }} - {{ entry.end_date }}</span>
+    </div>
+    <ul>
+      {% for highlight in entry.highlights %}
+      <li>{{ highlight }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+
+  {% if highlighted_skills %}
+  <h2>Skills</h2>
+  <div class="skills">
+    {% for skill in highlighted_skills %}
+    <span class="skill">{{ skill }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if education %}
+  <h2>Education</h2>
+  {% for edu in education %}
+  <p><strong>{{ edu.get('institution', '') }}</strong> — {{ edu.get('studyType', '') }} {{ edu.get('area', '') }}</p>
+  {% endfor %}
+  {% endif %}
+</body>
+</html>
