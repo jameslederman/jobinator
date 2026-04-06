@@ -208,6 +208,76 @@ class ScoringConfig(BaseModel):
     )
 
 
+class MaterialsConfig(BaseModel):
+    """Configuration for materials generation.
+
+    Loaded from the [materials] section of config.toml. Falls back to
+    safe defaults. Same standalone BaseModel pattern as ScoringConfig.
+
+    Example TOML:
+        [materials]
+        strong_model = "gpt-4o"
+        apply_threshold = 0.7
+        output_dir = "~/my-job-search"
+    """
+
+    strong_model: str = Field(
+        default="claude-3-5-sonnet-latest",
+        description="Strong model for quality-critical generation",
+    )
+    apply_threshold: float = Field(
+        default=0.6,
+        description="Minimum fit_score to allow apply",
+    )
+    profile_path: Optional[str] = Field(
+        default=None,
+        description="Path to JSON Resume profile file; defaults to config_dir/profile.json",
+    )
+    output_dir: str = Field(
+        default="~/jobinator-output",
+        description="Base directory for generated materials",
+    )
+    max_retries: int = Field(
+        default=2,
+        description="Max LLM retry attempts per generation call",
+    )
+
+
+def get_materials_config(config_dir: str | None = None) -> MaterialsConfig:
+    """Return MaterialsConfig loaded from the [materials] section of config.toml.
+
+    Falls back to default MaterialsConfig if the file doesn't exist or
+    has no [materials] section.
+
+    Args:
+        config_dir: Path to the directory containing config.toml.
+                    Defaults to platformdirs user_config_dir("jobinator").
+
+    Returns:
+        MaterialsConfig instance
+    """
+    if config_dir is None:
+        config_dir = platformdirs.user_config_dir("jobinator")
+
+    toml_path = os.path.join(config_dir, "config.toml")
+    if not os.path.exists(toml_path):
+        return MaterialsConfig()
+
+    try:
+        import tomllib  # stdlib in Python 3.11+
+    except ImportError:
+        try:
+            import tomli as tomllib  # type: ignore[no-redef]  # fallback for older Python
+        except ImportError:
+            return MaterialsConfig()
+
+    with open(toml_path, "rb") as f:
+        data = tomllib.load(f)
+
+    materials_data = data.get("materials", {})
+    return MaterialsConfig(**materials_data)
+
+
 def get_scoring_config(config_dir: str | None = None) -> ScoringConfig:
     """Return ScoringConfig loaded from the [scoring] section of config.toml.
 
