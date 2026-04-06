@@ -15,18 +15,17 @@ Surface high-fit opportunities I'd miss manually and generate application materi
 - [x] Multi-source job discovery (Wellfound, Greenhouse/Lever ATS, HN Who's Hiring) — Validated in Phase 2: Data Ingestion
 - [x] Structured job data normalization (title, company, location, description, requirements, salary, URL, source) — Validated in Phase 1: Foundation + Phase 2: Data Ingestion
 - [x] Deduplication — no re-processing or duplicate applications — Validated in Phase 1: Foundation + Phase 2: Data Ingestion
+- [x] Tailored resume generation that emphasizes relevant experience while staying truthful — Validated in Phase 4: Materials Generation
+- [x] Concise, company+role-specific cover letter generation — Validated in Phase 4: Materials Generation
+- [x] Interview prep brief generation (company overview, likely questions, talking points) — Validated in Phase 4: Materials Generation
+- [x] Application materials saved to configurable output directory (~/jobinator-output/ default) — Validated in Phase 4: Materials Generation
+- [x] Materials versioned and structured per company/role — Validated in Phase 4: Materials Generation
 
 ### Active
 
 - [ ] Hybrid fit scoring: hard filters (location, salary, keywords) then LLM-based nuanced evaluation
-- [ ] Hybrid fit scoring: hard filters (location, salary, keywords) then LLM-based nuanced evaluation
 - [ ] Fit score output: score 0-1, strengths match, gaps, compensation estimate, priority score
 - [ ] JSON Resume base profile with programmatic tailoring per role
-- [ ] Tailored resume generation that emphasizes relevant experience while staying truthful
-- [ ] Concise, company+role-specific cover letter generation
-- [ ] Interview prep brief generation (company overview, likely questions, talking points)
-- [ ] Application materials saved to configurable output directory (~/jobinator-output/ default)
-- [ ] Materials versioned and structured per company/role
 - [ ] Three application modes: manual assist, human-in-the-loop, form-filling assist
 - [ ] SQLite + SQLModel persistent state (jobs seen, scored, applied, materials, outcomes)
 - [ ] Custom Python agent loop with tool dispatch (no framework dependency)
@@ -93,4 +92,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-05 after Phase 2 (Data Ingestion) completion — all four source adapters operational, discovery pipeline with normalize/dedup/persist/stale-marking wired to CLI*
+*Last updated: 2026-04-06 after Phase 4 (Materials Generation) completion — apply pipeline generates tailored resume, cover letter, and prep brief with HITL confirmation, WeasyPrint PDF rendering, and versioned output bundles*
