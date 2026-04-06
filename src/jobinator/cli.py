@@ -167,8 +167,7 @@ def score(
 
     if result.budget_stopped:
         console.print(
-            f"\n[red]Budget limit reached.[/red] "
-            f"Daily spend: ${budget_tracker.daily_spend():.4f}"
+            f"\n[red]Budget limit reached.[/red] Daily spend: ${budget_tracker.daily_spend():.4f}"
         )
 
     console.print(
@@ -179,6 +178,115 @@ def score(
 
     if result.budget_stopped:
         raise typer.Exit(code=1)
+
+
+@app.command()
+def apply(
+    job_id: str = typer.Argument(..., help="Job ID to generate materials for"),
+    force: bool = typer.Option(False, "--force", help="Override fit score threshold check"),
+) -> None:
+    """Generate tailored resume, cover letter, and prep brief for a job."""
+    from jobinator.budget.tracker import BudgetConfig, BudgetTracker
+    from jobinator.configs.settings import get_materials_config, get_scoring_config, get_settings
+    from jobinator.db import get_engine, get_session, init_db
+    from jobinator.generation.generator import MaterialsGenerator
+    from jobinator.pipelines.apply import get_job_with_score, run_apply
+    from jobinator.pipelines.score import load_profile
+
+    settings = get_settings()
+    materials_config = get_materials_config(settings.config_dir)
+
+    # Use scoring config profile_path as fallback if materials doesn't have one
+    if not materials_config.profile_path:
+        scoring_config = get_scoring_config(settings.config_dir)
+        if scoring_config.profile_path:
+            materials_config = materials_config.model_copy(
+                update={"profile_path": scoring_config.profile_path}
+            )
+
+    # Validate API key presence before any DB/LLM work (fail fast)
+    has_anthropic = bool(settings.anthropic_api_key)
+    has_openai = bool(settings.openai_api_key)
+    if not has_anthropic and not has_openai:
+        console.print(
+            "[red]No API key configured.[/red] "
+            "Set ANTHROPIC_API_KEY or OPENAI_API_KEY in .env file."
+        )
+        raise typer.Exit(code=1)
+
+    engine = get_engine(settings.database_url)
+    init_db(engine)
+
+    with get_session(engine) as session:
+        # Load job and score
+        job, score = get_job_with_score(session, job_id)
+        if job is None:
+            console.print(f"[red]Job not found:[/red] {job_id}")
+            raise typer.Exit(code=1)
+
+        if score is None:
+            console.print(f"[yellow]Warning:[/yellow] Job {job_id} has not been scored yet.")
+
+        # Override threshold if --force
+        if force:
+            materials_config = materials_config.model_copy(update={"apply_threshold": 0.0})
+
+        # Load profile
+        profile_data = load_profile(materials_config.profile_path)
+        if profile_data is None:
+            path_display = materials_config.profile_path or "not configured"
+            console.print(
+                f"[red]Profile not found:[/red] {path_display}\n"
+                "Create a JSON Resume file and set [materials] profile_path in "
+                f"{settings.config_dir}/config.toml"
+            )
+            raise typer.Exit(code=1)
+
+        budget_config = BudgetConfig(
+            daily_limit_usd=settings.daily_budget_usd,
+            per_job_limit_usd=settings.per_job_budget_usd,
+            warn_threshold=settings.budget_warn_threshold,
+        )
+        budget_tracker = BudgetTracker(config=budget_config, session=session)
+        generator = MaterialsGenerator(budget_tracker=budget_tracker, config=materials_config)
+
+        console.print(f"\n[bold]Generating materials for:[/bold] {job.title} at {job.company}")
+        if score:
+            console.print(
+                f"  Fit score: {score.fit_score:.2f} | Priority: {score.priority_score:.2f}"
+            )
+        console.print(f"  Model: {materials_config.strong_model}")
+        console.print()
+
+        result = run_apply(
+            session=session,
+            job=job,
+            score=score,
+            profile_data=profile_data,
+            generator=generator,
+            budget_tracker=budget_tracker,
+            config=materials_config,
+        )
+
+    # Print results
+    if result.errors:
+        for error in result.errors:
+            console.print(f"[red]{error}[/red]")
+        raise typer.Exit(code=1)
+
+    if result.budget_stopped:
+        console.print(
+            f"\n[red]Budget limit reached.[/red] Daily spend: ${budget_tracker.daily_spend():.4f}"
+        )
+        raise typer.Exit(code=1)
+
+    if not result.confirmed:
+        console.print("[yellow]Apply cancelled by user.[/yellow]")
+        raise typer.Exit(code=0)
+
+    if result.success:
+        console.print(f"\n[green]Materials written to:[/green] {result.bundle_path}")
+        console.print(f"  Total cost: ${result.total_cost_usd:.4f}")
 
 
 if __name__ == "__main__":
