@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Database schema, normalization pipeline, heuristic filtering, budget tracker infrastructure, and output directory conventions (completed 2026-04-05)
 - [ ] **Phase 2: Data Ingestion** - Source adapters for Wellfound, Greenhouse/Lever, and HN Hiring with deduplication and freshness tracking
-- [ ] **Phase 3: LLM Scoring** - Multi-provider LLM abstraction, semantic fit scoring with reasoning, and live budget enforcement
+- [x] **Phase 3: LLM Scoring** - Multi-provider LLM abstraction, semantic fit scoring with reasoning, and live budget enforcement (completed 2026-04-06)
 - [ ] **Phase 4: Materials Generation** - Tailored resume, cover letter, and interview prep brief generation with human-in-the-loop review
 - [ ] **Phase 5: Application Pipeline and CLI** - Application status tracking, decision logging, feedback loop, and complete CLI surface
 
@@ -63,11 +63,11 @@ Plans:
   3. LLM calls for scoring route to the cheap model tier (Haiku or GPT-4o-mini), not the strong tier
   4. Every LLM call records token count and dollar cost to SQLite, and a daily spend total is queryable
   5. When the configured daily budget is hit, the `score` command stops and reports spend before making any further LLM calls
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 03-01-PLAN.md — JobScore model, ScoringConfig, LLM client wrapper (Instructor + LiteLLM), Alembic migration
-- [ ] 03-02-PLAN.md — Scoring prompt builder, scorer, pipeline orchestrator, CLI score command with budget gating
+- [x] 03-02-PLAN.md — Scoring prompt builder, scorer, pipeline orchestrator, CLI score command with budget gating
 
 ### Phase 4: Materials Generation
 **Goal**: For any above-threshold job, the system generates a tailored resume, cover letter, and interview prep brief grounded strictly in the user's profile — and requires human confirmation before writing outputs
@@ -102,6 +102,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-04-05 |
 | 2. Data Ingestion | 2/3 | In Progress|  |
-| 3. LLM Scoring | 1/2 | In Progress|  |
+| 3. LLM Scoring | 2/2 | Complete   | 2026-04-06 |
 | 4. Materials Generation | 0/TBD | Not started | - |
 | 5. Application Pipeline and CLI | 0/TBD | Not started | - |

@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 03-llm-scoring 03-01-PLAN.md
-last_updated: "2026-04-06T14:02:22.097Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 03-llm-scoring 03-02-PLAN.md
+last_updated: "2026-04-06T14:11:05.109Z"
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -53,6 +53,7 @@ Plan: 2 of 2
 | Phase 02-data-ingestion P02 | 4 | 2 tasks | 6 files |
 | Phase 02-data-ingestion P03 | 9 | 2 tasks | 5 files |
 | Phase 03-llm-scoring P01 | 3 | 2 tasks | 10 files |
+| Phase 03-llm-scoring P02 | 6 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,8 @@ Recent decisions affecting current work:
 - [Phase 03-llm-scoring]: Cost extraction via _hidden_params['response_cost'] not litellm.completion_cost() — known instructor#1330 bug where completion_cost() returns 0.0 through Instructor wrapper
 - [Phase 03-llm-scoring]: ScoringConfig as standalone BaseModel (not Settings subclass) — consistent with FilterConfig and DiscoveryConfig patterns for test-overridable config
 - [Phase 03-llm-scoring]: JobScoreOutput as plain Pydantic BaseModel not SQLModel table — Instructor response_model is separate from DB persistence model
+- [Phase 03-llm-scoring]: Local priority score computation overrides LLM priority_score — LLM lacks recency/urgency context; local _compute_priority() uses configurable weights with 30-day recency decay and 14-day urgency decay
+- [Phase 03-llm-scoring]: CLI tests use module-level monkey-patching instead of unittest.mock.patch() — lazy imports inside score() function body prevent patching at jobinator.cli module level
 
 ### Pending Todos
 
@@ -97,6 +100,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-06T14:02:22.095Z
-Stopped at: Completed 03-llm-scoring 03-01-PLAN.md
+Last session: 2026-04-06T14:11:05.108Z
+Stopped at: Completed 03-llm-scoring 03-02-PLAN.md
 Resume file: None
