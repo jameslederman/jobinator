@@ -1,0 +1,24 @@
+{
+  "basics": {
+    "name": "Test User",
+    "label": "Senior Data Scientist / ML Engineer",
+    "email": "test@example.com",
+    "summary": "8 years of experience in ML, NLP, and data engineering. Built production recommendation systems and real-time ML pipelines.",
+    "location": {"city": "San Francisco", "region": "CA"}
+  },
+  "work": [
+    {
+      "name": "ExampleCorp",
+      "position": "Senior ML Engineer",
+      "startDate": "2020-01-01",
+      "summary": "Led ML platform team. Built feature store serving 10M predictions/day.",
+      "highlights": ["Built real-time feature pipeline", "Reduced model training time 5x"]
+    }
+  ],
+  "skills": [
+    {"name": "Python", "level": "Expert"},
+    {"name": "PyTorch", "level": "Advanced"},
+    {"name": "SQL", "level": "Expert"},
+    {"name": "Spark", "level": "Advanced"}
+  ]
+}
