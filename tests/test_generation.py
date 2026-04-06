@@ -138,8 +138,14 @@ def _make_mock_raw(cost: float = 0.005) -> MagicMock:
 
 
 def _make_budget_tracker() -> MagicMock:
-    """Create a mock BudgetTracker that does nothing by default."""
-    tracker = MagicMock()
+    """Create a mock BudgetTracker that does nothing by default.
+
+    Uses spec=BudgetTracker so that assert_within_limits (which starts with
+    'assert') is recognized as a valid attribute, not a pytest assertion.
+    """
+    from jobinator.budget.tracker import BudgetTracker
+
+    tracker = MagicMock(spec=BudgetTracker)
     tracker.assert_within_limits.return_value = None
     tracker.record.return_value = None
     return tracker
