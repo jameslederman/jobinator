@@ -79,7 +79,12 @@ Plans:
   3. All three materials are rendered to PDF and the files are present on disk after generation
   4. The user is shown a preview of generated materials and must explicitly confirm before any file is written — the system does not write outputs silently
   5. Re-running `apply` for the same job creates a new versioned folder rather than overwriting the previous run
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — GeneratedMaterial model, response models, MaterialsConfig, Alembic migration, dependencies
+- [ ] 04-02-PLAN.md — Prompt builders, MaterialsGenerator, Jinja2 templates, WeasyPrint renderer
+- [ ] 04-03-PLAN.md — Apply pipeline orchestrator, CLI apply command, end-to-end verification
 
 ### Phase 5: Application Pipeline and CLI
 **Goal**: The full pipeline is wired into a complete, usable CLI — application status is tracked end-to-end, every decision is logged with reasoning, and outcome data is captured for future feedback
@@ -103,5 +108,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete   | 2026-04-05 |
 | 2. Data Ingestion | 2/3 | In Progress|  |
 | 3. LLM Scoring | 2/2 | Complete   | 2026-04-06 |
-| 4. Materials Generation | 0/TBD | Not started | - |
+| 4. Materials Generation | 0/3 | Not started | - |
 | 5. Application Pipeline and CLI | 0/TBD | Not started | - |
