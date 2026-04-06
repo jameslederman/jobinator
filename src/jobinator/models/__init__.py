@@ -8,6 +8,7 @@ from jobinator.models.job import (
     SalarySource,
     StatusEvent,
 )
+from jobinator.models.score import JobScore, JobScoreOutput
 
 __all__ = [
     "NormalizedJob",
@@ -17,4 +18,6 @@ __all__ = [
     "SalarySource",
     "SpendRecord",
     "DecisionLog",
+    "JobScore",
+    "JobScoreOutput",
 ]

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 from functools import lru_cache
-from typing import Tuple, Type
+from typing import Optional, Tuple, Type
 
 import platformdirs
 from pydantic import BaseModel, Field
@@ -162,6 +162,85 @@ class DiscoveryConfig(BaseModel):
         default=5.0,
         description="Maximum delay in seconds between requests (rate limiting)",
     )
+
+
+class ScoringConfig(BaseModel):
+    """Configuration for LLM-based job scoring.
+
+    Loaded from the [scoring] section of config.toml. Falls back to
+    safe defaults when no config file is present.
+
+    Follows the same standalone BaseModel pattern as DiscoveryConfig (not a
+    nested Settings subclass) to allow test-overridable config without
+    requiring config files. See Phase 1 Pitfall 7.
+
+    Example TOML:
+        [scoring]
+        cheap_model = "gpt-4o-mini"
+        strong_model = "gpt-4o"
+        score_batch_size = 5
+        min_fit_score_threshold = 0.6
+    """
+
+    cheap_model: str = Field(
+        default="claude-3-haiku-20240307",
+        description="Cheap/fast model for high-volume filtering and scoring",
+    )
+    strong_model: str = Field(
+        default="claude-3-5-sonnet-latest",
+        description="Strong model for quality-critical generation",
+    )
+    score_batch_size: int = Field(
+        default=10,
+        description="Number of jobs to score per batch",
+    )
+    min_fit_score_threshold: float = Field(
+        default=0.5,
+        description="Minimum fit score to consider a job worth tracking",
+    )
+    profile_path: Optional[str] = Field(
+        default=None,
+        description="Path to JSON Resume profile file; defaults to config_dir/profile.json",
+    )
+    priority_weights: dict[str, float] = Field(
+        default_factory=lambda: {"fit": 0.6, "recency": 0.2, "urgency": 0.2},
+        description="Weights for computing priority score from sub-scores",
+    )
+
+
+def get_scoring_config(config_dir: str | None = None) -> ScoringConfig:
+    """Return ScoringConfig loaded from the [scoring] section of config.toml.
+
+    Falls back to default ScoringConfig if the file doesn't exist or
+    has no [scoring] section.
+
+    Args:
+        config_dir: Path to the directory containing config.toml.
+                    Defaults to platformdirs user_config_dir("jobinator").
+
+    Returns:
+        ScoringConfig instance
+    """
+    if config_dir is None:
+        config_dir = platformdirs.user_config_dir("jobinator")
+
+    toml_path = os.path.join(config_dir, "config.toml")
+    if not os.path.exists(toml_path):
+        return ScoringConfig()
+
+    try:
+        import tomllib  # stdlib in Python 3.11+
+    except ImportError:
+        try:
+            import tomli as tomllib  # type: ignore[no-redef]  # fallback for older Python
+        except ImportError:
+            return ScoringConfig()
+
+    with open(toml_path, "rb") as f:
+        data = tomllib.load(f)
+
+    scoring_data = data.get("scoring", {})
+    return ScoringConfig(**scoring_data)
 
 
 def get_discovery_config(config_dir: str | None = None) -> DiscoveryConfig:

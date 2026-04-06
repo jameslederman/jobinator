@@ -4,7 +4,7 @@ import pytest
 from sqlmodel import Session, SQLModel, create_engine
 
 # Import all models to register them with SQLModel.metadata
-from jobinator.models import DecisionLog, NormalizedJob, SpendRecord, StatusEvent  # noqa: F401
+from jobinator.models import DecisionLog, JobScore, NormalizedJob, SpendRecord, StatusEvent  # noqa: F401
 
 
 @pytest.fixture
