@@ -30,7 +30,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **MATL-02**: Generated resumes are truthful — no hallucinated metrics, dates, or skills
 - [x] **MATL-03**: User can generate a concise, company+role-specific cover letter per job
 - [x] **MATL-04**: User can generate an interview prep brief per job (company overview, likely questions, talking points)
-- [ ] **MATL-05**: All generated materials are rendered to PDF
+- [x] **MATL-05**: All generated materials are rendered to PDF
 - [x] **MATL-06**: Materials are saved to configurable output directory organized by company/role with versioning
 
 ### Application
@@ -104,7 +104,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MATL-02 | Phase 4 | Complete |
 | MATL-03 | Phase 4 | Complete |
 | MATL-04 | Phase 4 | Complete |
-| MATL-05 | Phase 4 | Pending |
+| MATL-05 | Phase 4 | Complete |
 | MATL-06 | Phase 4 | Complete |
 | APPL-01 | Phase 5 | Pending |
 | APPL-02 | Phase 5 | Pending |

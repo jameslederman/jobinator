@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 04-materials-generation 04-01-PLAN.md
-last_updated: "2026-04-06T18:50:45.973Z"
+stopped_at: Completed 04-materials-generation 04-02-PLAN.md
+last_updated: "2026-04-06T18:59:46.554Z"
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 11
-  completed_plans: 9
+  completed_plans: 10
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-04-04)
 ## Current Position
 
 Phase: 04 (materials-generation) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Plan: 2 of 3
 | Phase 03-llm-scoring P01 | 3 | 2 tasks | 10 files |
 | Phase 03-llm-scoring P02 | 6 | 2 tasks | 9 files |
 | Phase 04-materials-generation P01 | 7 | 2 tasks | 7 files |
+| Phase 04-materials-generation P02 | 6 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -91,6 +92,8 @@ Recent decisions affecting current work:
 - [Phase 04-materials-generation]: MaterialsConfig as standalone BaseModel (not Settings subclass) — consistent with ScoringConfig/DiscoveryConfig pattern for test-overridable config without requiring config files
 - [Phase 04-materials-generation]: Generation response models (ResumeContent, CoverLetterContent, PrepBriefContent) as plain Pydantic BaseModel not SQLModel — same pattern as JobScoreOutput, Instructor response_model separate from DB persistence model
 - [Phase 04-materials-generation]: WeasyPrint macOS fix: sitecustomize.py in venv sets DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib at Python startup — requires brew install pango on fresh macOS setups
+- [Phase 04-materials-generation]: MagicMock(spec=BudgetTracker) required for assert_within_limits — MagicMock treats assert_* attributes as pytest assertions without spec
+- [Phase 04-materials-generation]: Prompt grounding rules embedded in system message with full profile JSON (not truncated) — satisfies MATL-02 verifiability
 
 ### Pending Todos
 
@@ -104,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-06T18:50:45.971Z
-Stopped at: Completed 04-materials-generation 04-01-PLAN.md
+Last session: 2026-04-06T18:59:46.552Z
+Stopped at: Completed 04-materials-generation 04-02-PLAN.md
 Resume file: None
