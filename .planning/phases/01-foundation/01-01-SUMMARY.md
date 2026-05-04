@@ -194,6 +194,17 @@ None - no external service configuration required. API keys can optionally be ad
 - Settings and engine factory ready for use by all downstream components
 - Alembic upgrade path verified end-to-end — future migrations can be generated with `uv run alembic revision --autogenerate -m "description"`
 
+## Self-Check: PASSED
+
+- FOUND: src/jobinator/models/job.py
+- FOUND: src/jobinator/models/budget.py
+- FOUND: src/jobinator/db.py
+- FOUND: src/jobinator/configs/settings.py
+- FOUND: alembic/env.py
+- FOUND: commit b623642 (Task 1: project scaffold)
+- FOUND: commit 3e6ef36 (Task 2: SQLModel tables, Alembic, tests)
+- All 7 pytest tests passing
+
 ---
 *Phase: 01-foundation*
 *Completed: 2026-04-05*

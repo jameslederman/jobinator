@@ -187,7 +187,7 @@ class ScoringConfig(BaseModel):
         description="Cheap/fast model for high-volume filtering and scoring",
     )
     strong_model: str = Field(
-        default="claude-3-5-sonnet-latest",
+        default="claude-3-5-sonnet-20241022",
         description="Strong model for quality-critical generation",
     )
     score_batch_size: int = Field(
@@ -222,7 +222,7 @@ class MaterialsConfig(BaseModel):
     """
 
     strong_model: str = Field(
-        default="claude-3-5-sonnet-latest",
+        default="claude-3-5-sonnet-20241022",
         description="Strong model for quality-critical generation",
     )
     apply_threshold: float = Field(

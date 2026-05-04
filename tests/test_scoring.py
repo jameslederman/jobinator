@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import pytest
 from pydantic import ValidationError
-from sqlmodel import Session, SQLModel, create_engine
 from sqlalchemy.exc import IntegrityError
+from sqlmodel import Session, SQLModel, create_engine
+
+from jobinator.configs.settings import ScoringConfig, get_scoring_config
 
 # Import all models to register them with SQLModel.metadata
 from jobinator.models import DecisionLog, NormalizedJob, SpendRecord, StatusEvent  # noqa: F401
 from jobinator.models.score import JobScore, JobScoreOutput
-from jobinator.configs.settings import ScoringConfig, get_scoring_config
 
 
 @pytest.fixture
@@ -216,9 +217,9 @@ class TestScoringConfig:
         assert cfg.cheap_model == "claude-3-haiku-20240307"
 
     def test_scoring_config_default_strong_model(self):
-        """ScoringConfig defaults to claude-3-5-sonnet-latest for strong_model."""
+        """ScoringConfig defaults to claude-3-5-sonnet-20241022 for strong_model."""
         cfg = ScoringConfig()
-        assert cfg.strong_model == "claude-3-5-sonnet-latest"
+        assert cfg.strong_model == "claude-3-5-sonnet-20241022"
 
     def test_scoring_config_default_score_batch_size(self):
         """ScoringConfig defaults score_batch_size to 10."""
@@ -231,7 +232,7 @@ class TestScoringConfig:
         assert cfg.min_fit_score_threshold == 0.5
 
     def test_scoring_config_can_be_overridden(self):
-        """ScoringConfig can be overridden with keyword args (test-overridable BaseModel pattern)."""
+        """ScoringConfig can be overridden with keyword args."""
         cfg = ScoringConfig(
             cheap_model="gpt-4o-mini",
             strong_model="gpt-4o",
@@ -260,7 +261,7 @@ class TestGetScoringConfig:
         cfg = get_scoring_config(config_dir=str(tmp_path))
         assert isinstance(cfg, ScoringConfig)
         assert cfg.cheap_model == "claude-3-haiku-20240307"
-        assert cfg.strong_model == "claude-3-5-sonnet-latest"
+        assert cfg.strong_model == "claude-3-5-sonnet-20241022"
         assert cfg.score_batch_size == 10
         assert cfg.min_fit_score_threshold == 0.5
 
@@ -274,4 +275,4 @@ class TestGetScoringConfig:
         assert cfg.cheap_model == "gpt-4o-mini"
         assert cfg.min_fit_score_threshold == 0.6
         # Unspecified fields should still be defaults
-        assert cfg.strong_model == "claude-3-5-sonnet-latest"
+        assert cfg.strong_model == "claude-3-5-sonnet-20241022"

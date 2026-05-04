@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from jobinator.models.score import JobScoreOutput
 from jobinator.scoring import LLMClient, LLMResult
 
@@ -99,7 +97,7 @@ class TestLLMClientScore:
             client.score([{"role": "user", "content": "score this"}])
 
         call_kwargs = mock_create.call_args.kwargs
-        assert call_kwargs.get("model") == "gpt-4o-mini"
+        assert call_kwargs.get("model") == "openai/gpt-4o-mini"
 
     def test_score_passes_response_model_job_score_output(self):
         """LLMClient passes response_model=JobScoreOutput to create_with_completion."""

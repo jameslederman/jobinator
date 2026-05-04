@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+
+# Caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Environment / secrets
+.env
+*.env
+
+# Personal config & data (never commit to public repo)
+config.toml
+profile.json
+*.db
+jobinator-output/
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/

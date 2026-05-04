@@ -61,8 +61,14 @@ class LLMClient:
         Returns:
             LLMResult with structured score output, cost, and token counts.
         """
+        model = self.model
+        if "/" not in model:
+            if "claude" in model or "anthropic" in model:
+                model = f"anthropic/{model}"
+            elif "gpt" in model or "openai" in model:
+                model = f"openai/{model}"
         score_output, raw = _client.create_with_completion(
-            model=self.model,
+            model=model,
             messages=messages,
             response_model=JobScoreOutput,
             max_tokens=512,

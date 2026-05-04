@@ -56,6 +56,20 @@ def _provider_from_model(model: str) -> str:
     return "unknown"
 
 
+def _ensure_provider_prefix(model: str) -> str:
+    """Ensure model string has the LiteLLM provider prefix.
+
+    LiteLLM requires 'anthropic/claude-...' or 'openai/gpt-...' format.
+    If the user config omits the prefix, add it based on model name.
+    """
+    if "/" in model:
+        return model
+    provider = _provider_from_model(model)
+    if provider != "unknown":
+        return f"{provider}/{model}"
+    return model
+
+
 class MaterialsGenerator:
     """Orchestrates generation of resume, cover letter, and interview prep brief.
 
@@ -99,7 +113,7 @@ class MaterialsGenerator:
 
         # 3. Call LLM via Instructor
         content, raw = _client.create_with_completion(
-            model=self.config.strong_model,
+            model=_ensure_provider_prefix(self.config.strong_model),
             messages=messages,
             response_model=ResumeContent,
             max_tokens=2048,
@@ -157,7 +171,7 @@ class MaterialsGenerator:
 
         # 3. Call LLM via Instructor
         content, raw = _client.create_with_completion(
-            model=self.config.strong_model,
+            model=_ensure_provider_prefix(self.config.strong_model),
             messages=messages,
             response_model=CoverLetterContent,
             max_tokens=1024,
@@ -215,7 +229,7 @@ class MaterialsGenerator:
 
         # 3. Call LLM via Instructor
         content, raw = _client.create_with_completion(
-            model=self.config.strong_model,
+            model=_ensure_provider_prefix(self.config.strong_model),
             messages=messages,
             response_model=PrepBriefContent,
             max_tokens=1536,
