@@ -37,9 +37,24 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **APPL-01**: User can track application status through pipeline stages (discovered, scored, applied, phone_screen, interview, rejected, offer)
 - [ ] **APPL-02**: System prevents duplicate applications to the same role
-- [ ] **APPL-03**: User can review scored jobs and generated materials before any apply action (human-in-the-loop)
-- [ ] **APPL-04**: System tracks response/interview/offer rates per source, role type, and company type for feedback loop
-- [ ] **APPL-05**: Decision logging captures reasoning for every ignore/track/apply decision
+- [ ] **APPL-03**: User can review scored jobs and generated materials before any apply action (human-in-the-loop) — *deferred to backlog*
+- [ ] **APPL-04**: System tracks response/interview/offer rates per source, role type, and company type for feedback loop — *deferred to backlog*
+- [ ] **APPL-05**: Decision logging captures reasoning for every ignore/track/apply decision — *partially complete (apply pipeline logs)*
+
+### Discovery v2 (Phase 5)
+
+- [ ] **DISC-09**: MAANG career page adapters pull live job listings (Google, Meta, Apple, Amazon, Netflix/Microsoft + 3-5 others)
+- [ ] **DISC-10**: Company constraints table tracks cooldown periods, blacklisted tracks, and preferred tracks per company
+- [ ] **DISC-11**: HN Who's Hiring parsing produces clean structured fields (title, company, location, URL) without garbled output
+- [ ] **DISC-12**: LinkedIn integration — at minimum job listing import capability
+
+### Materials v2 (Phase 6)
+
+- [ ] **MATL-07**: Core resume templates (2-3 archetypes) maintained by user, generation applies minimal-diff tailoring only
+- [ ] **MATL-08**: Cover letter format: 1-2 sentence hook + 2-3 bullet points + sign-off (not verbose prose)
+- [ ] **MATL-09**: Prep brief includes links to company page, recent news articles, and career page — structured as bullets not prose
+- [ ] **MATL-10**: Generation uses OpenAI GPT-4o as strong model tier
+- [ ] **MATL-11**: User can select which core template to use for a given role archetype
 
 ### Infrastructure
 
@@ -56,8 +71,8 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Discovery Enhancements
 
-- **DISC-07**: Company-first discovery (target companies -> find open roles)
-- **DISC-08**: Company research enrichment (funding stage, headcount, tech stack)
+- **DISC-07**: Company-first discovery (target companies -> find open roles) — *promoted to v1, Phase 5*
+- **DISC-08**: Company research enrichment (funding stage, headcount, tech stack) — *promoted to v1, Phase 5*
 
 ### Application Enhancements
 
@@ -73,7 +88,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Feature | Reason |
 |---------|--------|
-| LinkedIn scraping | Legal/ToS risk, aggressive anti-bot measures — not worth it for v1 |
+| LinkedIn full scraping | Aggressive anti-bot measures make scraping unreliable — explore import/API alternatives instead (DISC-12) |
 | Full auto-apply without confirmation | Career damage risk from wrong roles, wrong answers, duplicates |
 | Browser automation for apply | Brittle, high maintenance, breaks on DOM changes |
 | SaaS / multi-user features | Single-user developer tool by design |
@@ -108,21 +123,32 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MATL-06 | Phase 4 | Complete |
 | APPL-01 | Phase 5 | Pending |
 | APPL-02 | Phase 5 | Pending |
-| APPL-03 | Phase 5 | Pending |
-| APPL-04 | Phase 5 | Pending |
-| APPL-05 | Phase 5 | Pending |
+| APPL-03 | Backlog | Deferred |
+| APPL-04 | Backlog | Deferred |
+| APPL-05 | Phase 4 | Partial |
 | INFR-01 | Phase 3 | Complete |
 | INFR-02 | Phase 3 | Complete |
 | INFR-03 | Phase 3 | Complete |
 | INFR-04 | Phase 1 | Complete |
 | INFR-05 | Phase 5 | Pending |
 | INFR-06 | Phase 1 | Complete |
+| DISC-07 | Phase 5 | Pending |
+| DISC-08 | Phase 5 | Pending |
+| DISC-09 | Phase 5 | Pending |
+| DISC-10 | Phase 5 | Pending |
+| DISC-11 | Phase 5 | Pending |
+| DISC-12 | Phase 5 | Pending |
+| MATL-07 | Phase 6 | Pending |
+| MATL-08 | Phase 6 | Pending |
+| MATL-09 | Phase 6 | Pending |
+| MATL-10 | Phase 6 | Pending |
+| MATL-11 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 28 total
-- Mapped to phases: 28
-- Unmapped: 0
+- v1 requirements: 39 total (11 new in restructure)
+- Mapped to phases: 37
+- Deferred to backlog: 2 (APPL-03, APPL-04)
 
 ---
 *Requirements defined: 2026-04-04*
-*Last updated: 2026-04-04 after roadmap creation — all 28 requirements mapped*
+*Last updated: 2026-05-03 after roadmap restructure — discovery overhaul and generation quality replace old Phase 5*

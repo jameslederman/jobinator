@@ -16,7 +16,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Data Ingestion** - Source adapters for Wellfound, Greenhouse/Lever, and HN Hiring with deduplication and freshness tracking
 - [x] **Phase 3: LLM Scoring** - Multi-provider LLM abstraction, semantic fit scoring with reasoning, and live budget enforcement (completed 2026-04-06)
 - [x] **Phase 4: Materials Generation** - Tailored resume, cover letter, and interview prep brief generation with human-in-the-loop review (completed 2026-04-06)
-- [ ] **Phase 5: Application Pipeline and CLI** - Application status tracking, decision logging, feedback loop, and complete CLI surface
+- [ ] **Phase 5: Discovery Overhaul** - MAANG career page adapters, HN parsing fixes, company constraints (cooldowns/blacklists), LinkedIn exploration, increased scoring throughput
+- [ ] **Phase 6: Generation Quality** - Core resume templates with minimal-diff tailoring, concise cover letter format, structured prep briefs with company links/news, OpenAI GPT-4o strong model
 
 ## Phase Details
 
@@ -86,22 +87,35 @@ Plans:
 - [x] 04-02-PLAN.md — Prompt builders, MaterialsGenerator, Jinja2 templates, WeasyPrint renderer
 - [x] 04-03-PLAN.md — Apply pipeline orchestrator, CLI apply command, end-to-end verification
 
-### Phase 5: Application Pipeline and CLI
-**Goal**: The full pipeline is wired into a complete, usable CLI — application status is tracked end-to-end, every decision is logged with reasoning, and outcome data is captured for future feedback
+### Phase 5: Discovery Overhaul
+**Goal**: The discover pipeline surfaces high-quality roles from MAANG career pages and improved HN parsing, respects company-specific constraints (cooldowns), and scores a meaningful volume of jobs per run
 **Depends on**: Phase 4
-**Requirements**: APPL-01, APPL-02, APPL-03, APPL-04, APPL-05, INFR-05
+**Requirements**: DISC-07, DISC-08, DISC-09, DISC-10, DISC-11, APPL-01, APPL-02, INFR-05
 **Success Criteria** (what must be TRUE):
-  1. Every CLI command (`discover`, `score`, `apply`, `run --auto`, `review`, `status`) runs without error and produces readable Rich-formatted output
-  2. A job's status transitions correctly through the pipeline stages (discovered → scored → applied → phone_screen / rejected / offer) and the current state is visible via `status`
-  3. Attempting to apply to a job already in `applied` state is blocked with a clear message — no duplicate application is created
-  4. The `review` command displays scored jobs and their materials in an interactive queue requiring explicit approval before any apply action proceeds
-  5. Running `status` shows response rate, interview rate, and offer rate broken down by source and role type, reflecting all recorded outcomes
+  1. Running `discover` pulls live job listings from at least 5 company career pages (Google, Meta, Apple, Amazon + others) and returns structured results
+  2. HN Who's Hiring parsing produces clean title, company, location, and URL fields — no garbled output
+  3. A company constraint (e.g., Meta SWE cooldown) prevents scoring/apply for blocked tracks while allowing other tracks
+  4. The scoring batch processes all unscored jobs by default (not limited to 10)
+  5. `jobinator` works as a CLI entry point (not `python -m jobinator.cli`)
+  6. A basic `status` command shows pipeline state (jobs discovered, scored, applied, with counts)
+**Plans**: TBD
+
+### Phase 6: Generation Quality
+**Goal**: Generated materials are concise, polished, and grounded in user-curated core templates — requiring minimal editing before submission
+**Depends on**: Phase 5
+**Requirements**: MATL-07, MATL-08, MATL-09, MATL-10, MATL-11
+**Success Criteria** (what must be TRUE):
+  1. Resume generation starts from a user-curated core template and applies only minimal per-role adjustments (reorder, re-emphasize) — never rewrites from scratch
+  2. Cover letters follow the format: 1-2 sentence hook + 2-3 bullet points + simple sign-off
+  3. Prep briefs are structured as bullet points with links to company page, recent news, and career page — no prose paragraphs
+  4. Generation uses GPT-4o (OpenAI) as the strong model tier and produces quality output
+  5. The user can maintain 2-3 core resume templates for different role archetypes (DS, ML Eng, Applied AI)
 **Plans**: TBD
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -109,4 +123,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Data Ingestion | 2/3 | In Progress|  |
 | 3. LLM Scoring | 2/2 | Complete   | 2026-04-06 |
 | 4. Materials Generation | 3/3 | Complete   | 2026-04-06 |
-| 5. Application Pipeline and CLI | 0/TBD | Not started | - |
+| 5. Discovery Overhaul | 0/TBD | Not started | - |
+| 6. Generation Quality | 0/TBD | Not started | - |
